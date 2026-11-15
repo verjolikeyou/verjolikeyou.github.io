@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.verjolikeyou.twa",
+        "sha256_cert_fingerprints": ["5E:40:A1:C2:99:3E:CB:86:58:45:50:13:A6:B2:26:0B:04:99:E0:FC:3E:21:FF:2D:7F:A1:BD:2B:AB:08:22:62"]
+      }
+    }]
