@@ -558,6 +558,7 @@ def page_dessin():
 
             <button type="button" class="btn-rose btn-option" data-url="/dessin/carotte" data-titre="1- Carotte">1- Carotte</button>
             <button type="button" class="btn-rose btn-option" data-url="/dessin/cartable" data-titre="2- Cartable">2- Cartable</button>
+            <button type="button" class="btn-rose btn-option" data-url="/dessin/fille" data-titre="Fille">Fille</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/" class="btn-retour">← Revenir au choix</a>
@@ -675,6 +676,87 @@ def page_dessin_cartable():
                 </div>
             </div>
             <div class="ruban-cote"><span>🌸</span><span>✂️</span><span>🎒</span><span>🌟</span><span>⭐</span></div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/dessin" class="btn-retour">← Revenir au choix du Dessin</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/dessin/fille")
+def page_dessin_fille():
+    pdf_etapes = charger_pdf_en_base64_images("Etape d'une fille.pdf") or charger_pdf_en_base64_images("Etape_d_une_fille.pdf")
+    pdf_fille = charger_pdf_en_base64_images("Fille.pdf")
+
+    bloc_etapes_pdf = (
+        "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #A855F7; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in pdf_etapes
+        ])
+        if pdf_etapes
+        else '<p style="background:#FAF5FF; border:2px dashed #A855F7; border-radius:10px; padding:10px; font-size:13px; color:#6B21A8; margin-bottom:10px;">Document Etape d\'une fille.pdf non détecté à côté du script (Les 6 étapes ci-dessous restent actives).</p>'
+    )
+
+    bloc_fille_pdf = (
+        "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #EC4899; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in pdf_fille
+        ])
+        if pdf_fille
+        else '<p style="background:#FDF2F8; border:2px dashed #EC4899; border-radius:10px; padding:10px; font-size:13px; color:#9D174D; margin-bottom:12px;">Document Fille.pdf non détecté à côté du script (Placez Fille.pdf à côté du script).</p>'
+    )
+
+    html = f"""
+        <div style="text-align:center; margin-bottom:12px;">
+            <span class="badge-date" style="background:#9333EA;">👧 Atelier Dessin : Dessiner une Petite Fille Exploratrice</span>
+        </div>
+
+        <div class="dessin-wrapper">
+            <div class="ruban-cote"><span>👧</span><span>⭐</span><span>🎨</span><span>🖍️</span><span>✨</span></div>
+            <div class="dessin-contenu" style="border-color:#9333EA;">
+                <p style="font-size:16px; font-weight:800; color:#7E22CE; margin-bottom:8px;">📘 Étapes : Etape d'une fille.pdf</p>
+                {bloc_etapes_pdf}
+
+                <p style="font-size:16px; font-weight:800; color:#DB2777; margin-top:12px; margin-bottom:8px;">🖍️ Dessin : Fille.pdf</p>
+                {bloc_fille_pdf}
+
+                <div style="background:#FAF5FF; border:2px solid #C084FC; border-radius:14px; padding:14px; margin-top:12px;">
+                    <p style="font-size:18px; font-weight:900; color:#7E22CE; text-align:center; margin-bottom:4px;">
+                        👧 Dessiner une petite fille exploratrice — 6 étapes
+                    </p>
+                    <p style="text-align:center; font-size:13px; color:#6B7280; font-weight:bold; margin-bottom:12px;">
+                        À toi de jouer ! Tu peux reproduire chaque étape pas à pas 😊
+                    </p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 1 :</b><br>
+                            Tête ronde.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 2 :</b><br>
+                            Cheveux avec frange.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 3 :</b><br>
+                            Grands yeux, nez et bouche qui sourit.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 4 :</b><br>
+                            Corps avec t-shirt rose.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 5 :</b><br>
+                            Bras, jambes et petit sac à dos violet.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#D81B60;">Étape 6 :</b><br>
+                            Version coloriée finale !
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ruban-cote"><span>🌸</span><span>🎒</span><span>👧</span><span>🌟</span><span>⭐</span></div>
         </div>
 
         <div style="text-align:center;">
@@ -1796,7 +1878,9 @@ def page_francais_exercices():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe" data-titre="Orthographe">Orthographe</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison" data-titre="Conjugaison">Conjugaison</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire" data-titre="Grammaire">Grammaire</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/vocabulaire" data-titre="Vocabulaire">Vocabulaire</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee" data-titre="Dictée préparée">Dictée préparée</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/ecriture-copie" data-titre="Ecriture et copie">Ecriture et copie</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/programme?matiere=Francais" class="btn-retour">← Revenir</a>
@@ -2355,6 +2439,7 @@ def page_exercices_dictee():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/16-octobre" data-titre="1-Vendredi 16 Octobre (Il brosse seul les dents...)">1-Vendredi 16 Octobre (Il brosse seul les dents...)</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/22-octobre" data-titre="1-Jeudi 22 Octobre (La propreté est bon pour nous...)">1-Jeudi 22 Octobre (La propreté est bon pour nous...)</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/30-octobre" data-titre="1-Ils montrent la carte de l'étudiant.">1-Ils montrent la carte de l'étudiant.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/13-novembre" data-titre="Elle prépare un bon achard">Elle prépare un bon achard</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -2485,6 +2570,26 @@ def page_ex_dictee_30_oct():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/dictee/13-novembre")
+def page_ex_dictee_13_nov():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Vendredi 13 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Dictée préparée</div>
+        </div>
+        <div class="cadre-contenu" style="font-size:16px; line-height:2.4;">
+            ✦ <b style="color:#0D47A1;">Elle prépare un bon achard.</b><br>
+            ✦ <b style="color:#0D47A1;">Nous avons trouvé un article.</b><br>
+            ✦ <b style="color:#0D47A1;">La directrice est au bureau de écolières.</b><br>
+            ✦ <b style="color:#0D47A1;">Ils ont trouvé ma soeur près du fleuve.</b><br>
+            ✦ <b style="color:#0D47A1;">Le maréchal coupe corne du cheval.</b>
+        </div>
+        <div style="text-align:center;">
+            <a href="/francais/exercices/dictee" class="btn-retour">← Revenir aux Dictées préparées</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/orthographe")
 def page_exercices_orthographe():
     html = """
@@ -2500,6 +2605,7 @@ def page_exercices_orthographe():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/e-eu" data-titre="1-Complete par e, eu.">1-Complete par e, eu.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/oeu-oei" data-titre="1-Complete par oeu, oei.">1-Complete par oeu, oei.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/dictee" data-titre="1-Dictée.">1-Dictée.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/ard-art" data-titre="1-ard,art">1-ard,art</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -2673,6 +2779,40 @@ def page_ex_ortho_dictee_ar():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/orthographe/ard-art")
+def page_ex_ortho_ard_art():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mercredi 11 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Orthographe — 1-ard, art</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">1) Complète par ard - art :</p>
+        <div style="background:#fff; border:2px solid #80DEEA; border-radius:10px; padding:10px; font-size:15px; line-height:2; margin-bottom:12px;">
+            ✦ le j<b style="color:#D81B60;">ard</b>in &nbsp;—&nbsp; la p<b style="color:#D81B60;">art</b> &nbsp;—&nbsp; l'<b style="color:#D81B60;">art</b>icle &nbsp;—&nbsp; vieill<b style="color:#D81B60;">ard</b>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">2) Dictée des mots :</p>
+        <div style="background:#fff; border:2px solid #80DEEA; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#1E3A8A; margin-bottom:12px;">
+            un jars &nbsp;—&nbsp; un achard &nbsp;—&nbsp; l'article &nbsp;—&nbsp; un canard
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">3) Trouve 2 mots contenant « art » :</p>
+        <div style="background:#E1F5FE; border-radius:10px; padding:8px; font-size:15px; font-weight:bold; color:#15803D; margin-bottom:12px;">
+            ✦ part , l'article
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">4) Donne 2 mots qui contiennent « ard » :</p>
+        <div style="background:#E1F5FE; border-radius:10px; padding:8px; font-size:15px; font-weight:bold; color:#15803D;">
+            ✦ canard &nbsp;—&nbsp; jardin
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/orthographe" class="btn-retour">← Revenir aux exercices d'Orthographe</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/conjugaison")
 def page_exercices_conjugaison():
     html = """
@@ -2688,6 +2828,7 @@ def page_exercices_conjugaison():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/nous-vous" data-titre="1-Remplace par les PPS Nous, Vous">1-Remplace par les PPS Nous, Vous</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/pluriels" data-titre="1-Remplace par les mots soulignés par les PPS au pluriels">1-Remplace par les mots soulignés par les PPS au pluriels</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/remplace-soulignes" data-titre="1-Remplace les mots soulignés.">1-Remplace les mots soulignés.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/pp-sujets" data-titre="1-PP Sujets">1-PP Sujets</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -2845,6 +2986,36 @@ def page_ex_conj_remplace_soulignes():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/conjugaison/pp-sujets")
+def page_ex_conj_pp_sujets():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mardi 10 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Conjugaison — 1-PP Sujets</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:8px;">1) Complète par les PPS aux pluriels :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ Toi et Ilham bavardez trop en classe. ➔ <b style="color:#15803D;">Vous</b><br>
+            ✦ Jean et papa vont au marché. ➔ <b style="color:#15803D;">Ils</b><br>
+            ✦ Moi et ma soeur avons acheté un cartable. ➔ <b style="color:#15803D;">Nous</b><br>
+            ✦ Les filles préparent un achard. ➔ <b style="color:#15803D;">Elles</b>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">2) Complète par les PPS aux singuliers :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ Moi suis malade. ➔ <b style="color:#15803D;">Je</b><br>
+            ✦ Marc a vu un vieillard. ➔ <b style="color:#15803D;">Il</b><br>
+            ✦ Toi donnes un peu de ta part. ➔ <b style="color:#15803D;">Tu</b><br>
+            ✦ Lucie a du mal à regarder. ➔ <b style="color:#15803D;">Elle</b>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/conjugaison" class="btn-retour">← Revenir aux exercices de Conjugaison</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/grammaire")
 def page_exercices_grammaire():
     html = """
@@ -2860,6 +3031,7 @@ def page_exercices_grammaire():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/compte-syllabes" data-titre="1-Compte et sépare les syllabes..">1-Compte et sépare les syllabes..</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/animal-chose-pers" data-titre="1-Complète par  animal-chose-personne..">1-Complète par  animal-chose-personne..</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/souligne-bonne-rep" data-titre="1-Souligne la bonne réponse.">1-Souligne la bonne réponse.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/minuscule-majuscule" data-titre="1-Miniscule ou majuscule">1-Miniscule ou majuscule</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3025,6 +3197,192 @@ def page_ex_gramm_souligne_bonne_rep():
 
         <div style="text-align:center;">
             <a href="/francais/exercices/grammaire" class="btn-retour">← Revenir aux exercices de Grammaire</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/exercices/grammaire/minuscule-majuscule")
+def page_ex_gramm_min_maj():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Jeudi 12 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Grammaire — 1-Miniscule ou majuscule</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:8px;">1) Complètez par majuscule ou minuscule :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ Le nom commun commence par une lettre <b style="color:#15803D;">minuscule</b>.<br>
+            ✦ Le nom propre commence par une lettre <b style="color:#15803D;">majuscule</b>.
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">2) Vrai ou faux :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ Papa est un nom propre. ➔ <b style="color:#DC2626;">Faux</b><br>
+            ✦ Marie est un nom propre. ➔ <b style="color:#15803D;">Vrai</b><br>
+            ✦ voiture est un nom commun. ➔ <b style="color:#15803D;">Vrai</b><br>
+            ✦ Luc est un nom commun. ➔ <b style="color:#DC2626;">Faux</b>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">3) Cherche 2 noms communs :</p>
+        <div style="background:#F0FDF4; border:2px dashed #16A34A; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#166534;">
+            ✦ papa &nbsp;—&nbsp; ✦ cartable
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/grammaire" class="btn-retour">← Revenir aux exercices de Grammaire</a>
+        </div>
+    """
+    return afficher(html)
+
+# =============================================================================
+# FRANÇAIS - EXERCICES : VOCABULAIRE & ÉCRITURE ET COPIE
+# =============================================================================
+@app.route("/francais/exercices/vocabulaire")
+def page_exercices_vocabulaire():
+    html = """
+        <div class="cadre-menu">
+            <h1 class="titre-principal" id="titre-ex-vocab">
+                Exercices de Vocabulaire<br>
+                <span class="sous-titre-selection" id="sous-titre-ex-vocab">Choisissez un exercice</span>
+            </h1>
+
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/vocabulaire/on-relie" data-titre="1-On relie">1-On relie</button>
+
+            <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
+            <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
+        </div>
+
+        <script>
+            let urlChoisie = "/francais/exercices/vocabulaire/on-relie";
+            const boutons = document.querySelectorAll('.btn-option');
+            const sousTitre = document.getElementById('sous-titre-ex-vocab');
+            const btnValider = document.getElementById('btn-valider');
+
+            boutons[0].classList.add('selected');
+            sousTitre.textContent = boutons[0].getAttribute('data-titre');
+
+            boutons.forEach(b => {
+                b.addEventListener('click', () => {
+                    boutons.forEach(x => x.classList.remove('selected'));
+                    b.classList.add('selected');
+                    urlChoisie = b.getAttribute('data-url');
+                    sousTitre.textContent = b.getAttribute('data-titre');
+                });
+            });
+
+            btnValider.addEventListener('click', () => {
+                window.location.href = urlChoisie;
+            });
+        </script>
+    """
+    return afficher(html)
+
+@app.route("/francais/exercices/vocabulaire/on-relie")
+def page_ex_vocab_on_relie():
+    html = """
+        <div style="text-align:center;">
+            <div class="titre-lecon">✏️ Vocabulaire — 1-On relie</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:8px;">1) Relie par des flèches :</p>
+        <div class="cadre-contenu" style="display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap;">
+            <div style="display:flex; flex-direction:column; gap:26px; font-weight:bold; color:#1E3A8A; font-size:15px;">
+                <div>Les élèves filles</div>
+                <div>Les élèves garçons</div>
+            </div>
+            <svg width="110" height="75" style="overflow:visible;">
+                <circle cx="8" cy="14" r="4" fill="#1E3A8A"/>
+                <circle cx="8" cy="60" r="4" fill="#1E3A8A"/>
+                <circle cx="102" cy="14" r="4" fill="#15803D"/>
+                <circle cx="102" cy="60" r="4" fill="#15803D"/>
+                <line x1="8" y1="14" x2="102" y2="60" stroke="#D81B60" stroke-width="2.5"/>
+                <line x1="8" y1="60" x2="102" y2="14" stroke="#0284C7" stroke-width="2.5"/>
+            </svg>
+            <div style="display:flex; flex-direction:column; gap:26px; font-weight:bold; color:#15803D; font-size:15px;">
+                <div>écoliers</div>
+                <div>écolières</div>
+            </div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">2) Complètez par directrice ou la maîtresse :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ La personne qui enseigne s'appelle <b style="color:#15803D;">la maîtresse</b>.<br>
+            ✦ La personne qui dirige notre école est <b style="color:#15803D;">la directrice</b>.
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">3) Donnez 2 fournitures scolaires :</p>
+        <div style="background:#F0FDF4; border:2px dashed #16A34A; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#166534;">
+            ✦ stylo , trousse
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/vocabulaire" class="btn-retour">← Revenir aux exercices de Vocabulaire</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/exercices/ecriture-copie")
+def page_exercices_ecriture_copie():
+    html = """
+        <div class="cadre-menu">
+            <h1 class="titre-principal" id="titre-ex-ecriture">
+                Ecriture et copie<br>
+                <span class="sous-titre-selection" id="sous-titre-ex-ecriture">Choisissez un texte</span>
+            </h1>
+
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/ecriture-copie/sel" data-titre="sel">sel</button>
+
+            <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
+            <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
+        </div>
+
+        <script>
+            let urlChoisie = "/francais/exercices/ecriture-copie/sel";
+            const boutons = document.querySelectorAll('.btn-option');
+            const sousTitre = document.getElementById('sous-titre-ex-ecriture');
+            const btnValider = document.getElementById('btn-valider');
+
+            boutons[0].classList.add('selected');
+            sousTitre.textContent = boutons[0].getAttribute('data-titre');
+
+            boutons.forEach(b => {
+                b.addEventListener('click', () => {
+                    boutons.forEach(x => x.classList.remove('selected'));
+                    b.classList.add('selected');
+                    urlChoisie = b.getAttribute('data-url');
+                    sousTitre.textContent = b.getAttribute('data-titre');
+                });
+            });
+
+            btnValider.addEventListener('click', () => {
+                window.location.href = urlChoisie;
+            });
+        </script>
+    """
+    return afficher(html)
+
+@app.route("/francais/exercices/ecriture-copie/sel")
+def page_ex_ecriture_sel():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 09 Novembre 2026</span>
+            <div class="titre-lecon">✍️ Ecriture et copie — Le sel</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte" style="color:#D90429; font-size:18px; text-decoration:underline; margin-bottom:14px;">
+                Le sel
+            </div>
+            <div class="cahier-ligne-texte" style="line-height:2.4; font-size:16px;">
+                On retire le sel de l'eau de la mer, qui est salée.<br>
+                Pour cela on fait venir l'eau dans les bassins.<br>
+                L'air et le soleil font évaporer cette eau ; ce qui reste est du sel.<br>
+                On trouve aussi du sel dans la terre, où il est en masses solides.
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/ecriture-copie" class="btn-retour">← Revenir à Ecriture et copie</a>
         </div>
     """
     return afficher(html)
@@ -3444,6 +3802,7 @@ def page_metrique():
 
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/metrique/regle" data-titre="Mesurer avec un règle graduée">Mesurer avec un règle graduée</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/metrique/segment" data-titre="Mesurer un segment">Mesurer un segment</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/metrique/unite-longueur" data-titre="Unité principale de mesure de longueur">Unité principale de mesure de longueur</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/lecons" class="btn-retour">← Revenir</a>
@@ -3554,6 +3913,49 @@ def page_lecon_segment():
     """
     return afficher(html)
 
+@app.route("/mathematiques/lecons/metrique/unite-longueur")
+def page_lecon_metrique_unite_longueur():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Jeudi 12 Novembre 2026</span>
+            <div class="titre-lecon">📏 Unité principale de mesure de longueur (m)</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div style="border:2px solid #0284C7; border-radius:10px; padding:10px 14px; background:#F0F9FF; margin-bottom:14px; text-align:center;">
+                <b style="color:#DC2626; font-size:17px;">Unité principale de mesure de longueur (m)</b>
+            </div>
+
+            <div class="cahier-ligne-texte" style="color:#DC2626; font-weight:bold; text-decoration:underline; margin-bottom:8px;">
+                Les différentes sortes de mètre :
+            </div>
+            <div style="font-size:15px; line-height:2; padding-left:10px; margin-bottom:14px;">
+                - mètre ruban<br>
+                - mètre roulant<br>
+                - mètre pliant<br>
+                - mètre rigide plat<br>
+                - mètre rigide
+            </div>
+
+            <div style="background:#FEFCE8; border-left:4px solid #CA8A04; padding:10px 12px; border-radius:6px; font-size:15px; line-height:1.8; margin-bottom:14px;">
+                <b>Pour mesurer la longueur de quelque chose ou de quelqu'un, on se sert d'un mètre.</b>
+            </div>
+
+            <div style="font-size:15px; line-height:2.1;">
+                ✦ <b style="color:#DC2626;">Le mètre ruban</b> est employé par <b style="color:#1E3A8A;">le tailleur et la couturière</b>.<br>
+                ✦ <b style="color:#DC2626;">Le mètre roulant</b> est employé par <b style="color:#1E3A8A;">le maçon</b>.<br>
+                ✦ <b style="color:#DC2626;">Le mètre pliant</b> est employé par <b style="color:#1E3A8A;">le menuisier</b>.<br>
+                ✦ <b style="color:#DC2626;">Le mètre rigide plat</b> est employé par <b style="color:#1E3A8A;">l'école</b>.<br>
+                ✦ <b style="color:#DC2626;">Le mètre rigide</b> est employé par <b style="color:#1E3A8A;">le marchand d'étoffe</b>.
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/lecons/metrique" class="btn-retour">← Revenir au Système métrique</a>
+        </div>
+    """
+    return afficher(html)
+
 # =============================================================================
 # EXERCICES DE MATHÉMATIQUES (ARITHMÉTIQUE, GÉOMÉTRIE, MÉTRIQUE)
 # =============================================================================
@@ -3572,6 +3974,7 @@ def page_exercices_arithmetique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/comptage-75" data-titre="1-Compte de 1 en 1 de 55 à 75.">1-Compte de 1 en 1 de 55 à 75.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/pose-effectue" data-titre="1-Pose et effectue.">1-Pose et effectue.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/ecris" data-titre="1-Ecris">1-Ecris</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/on-pose-effectue" data-titre="1-On pose et effectue">1-On pose et effectue</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -3751,6 +4154,89 @@ def page_ex_arith_ecris():
     """
     return afficher(html)
 
+@app.route("/mathematiques/exercices/arithmetique/on-pose-effectue")
+def page_ex_arith_on_pose_effectue():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 09 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Arithmétiques — Pose et éffectue</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <table class="table-calc">
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">9 - 3 = 6</span><br><br>
+                        &nbsp;&nbsp;9<br>
+                        - 3<br>
+                        -----<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">6</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">86 - 42 = 44</span><br><br>
+                        &nbsp;&nbsp;8 6<br>
+                        - 4 2<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">4 4</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">117 - 15 = 102</span><br><br>
+                        &nbsp;&nbsp;1 1 7<br>
+                        - &nbsp;&nbsp;1 5<br>
+                        ---------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">1 0 2</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">112 - 11 = 101</span><br><br>
+                        &nbsp;&nbsp;1 1 2<br>
+                        - &nbsp;&nbsp;1 1<br>
+                        ---------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">1 0 1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">76 - 4 = 72</span><br><br>
+                        &nbsp;&nbsp;7 6<br>
+                        - &nbsp;&nbsp;4<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">7 2</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">98 - 67 = 31</span><br><br>
+                        &nbsp;&nbsp;9 8<br>
+                        - 6 7<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">3 1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">83 - 51 = 32</span><br><br>
+                        &nbsp;&nbsp;8 3<br>
+                        - 5 1<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">3 2</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">45 - 2 = 43</span><br><br>
+                        &nbsp;&nbsp;4 5<br>
+                        - &nbsp;&nbsp;2<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">4 3</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/arithmetique" class="btn-retour">← Revenir aux exercices d'Arithmétique</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/mathematiques/exercices/geometrie")
 def page_exercices_geometrie():
     html = """
@@ -3864,6 +4350,7 @@ def page_exercices_metrique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/demi-droite" data-titre="1-Trace un demi droite.">1-Trace un demi droite.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/ij-4cm" data-titre="1-Trace [IJ] = 4cm.">1-Trace [IJ] = 4cm.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/segment-ab-6cm" data-titre="1-Trace un segment [AB] de 6 cm.">1-Trace un segment [AB] de 6 cm.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/complete" data-titre="1-Complete">1-Complete</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -4128,6 +4615,42 @@ def page_ex_met_segment_ab_6cm():
                 <text x="236" y="25" font-size="14" font-weight="bold" fill="#DC2626">D</text>
                 <text x="110" y="12" font-size="12" font-weight="bold" fill="#047857">7 cm</text>
             </svg>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/metrique" class="btn-retour">← Revenir aux exercices de Système Métrique</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/mathematiques/exercices/metrique/complete")
+def page_ex_met_complete():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Vendredi 13 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Système métrique — Complète</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte">1) Complète par la longueur, le mètre :</div>
+            <div style="font-size:15px; line-height:2.1; margin-bottom:16px;">
+                • L'unité principale de la longueur est <b style="color:#16A34A; text-decoration:underline;">mètre</b>.<br>
+                • On emploie <b style="color:#16A34A; text-decoration:underline;">le mètre</b> pour mesurer <b style="color:#16A34A; text-decoration:underline;">la longueur</b>.
+            </div>
+
+            <div class="cahier-ligne-texte">2- Vrai ou faux :</div>
+            <div style="font-size:15px; line-height:2.1; margin-bottom:16px;">
+                • Le mètre pliant est employé par le menuisier. ➔ <b style="color:#16A34A;">Vrai</b><br>
+                • Le mètre rigide est employé par le maçon. ➔ <b style="color:#DC2626;">Faux</b>
+            </div>
+
+            <div class="cahier-ligne-texte">3) Souligne la bonne réponse :</div>
+            <div style="font-size:15px; line-height:2.1;">
+                Le marchand d'étoffe emploie :<br>
+                - le mètre pliant<br>
+                - le mètre ruban<br>
+                - <b style="color:#16A34A; text-decoration:underline;">le mètre rigide</b> ✓
+            </div>
         </div>
 
         <div style="text-align:center;">
