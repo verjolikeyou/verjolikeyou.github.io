@@ -1,7 +1,7 @@
 // Service Worker 100% Hors-Ligne — Programme en 11ème
 // Compatible GitHub Pages (sous-dossier ou racine) et PWABuilder Android APK
 
-const CACHE_NAME = 'prog-11eme-offline-v1';
+const CACHE_NAME = 'prog-11eme-offline-v2';
 
 // Fichiers essentiels mis en cache dès l'installation (chemins relatifs ./)
 const CORE_ASSETS = [
@@ -89,6 +89,7 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
+        // Repli de sécurité si hors-ligne et ressource absente
         return caches.match('./index.html');
       });
     })
