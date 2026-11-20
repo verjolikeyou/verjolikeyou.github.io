@@ -780,6 +780,7 @@ def page_cours():
             <button type="button" class="btn-rose btn-option" data-url="/cours/pose-et-effectue" data-titre="1-Pose et effectue">1-Pose et effectue</button>
             <button type="button" class="btn-rose btn-option" data-url="/cours/decompose" data-titre="1-Décompose">1-Décompose</button>
             <button type="button" class="btn-rose btn-option" data-url="/cours/46-14" data-titre="46 - 14">46 - 14</button>
+            <button type="button" class="btn-rose btn-option" data-url="/cours/conjugue" data-titre="1-Conjugue">1-Conjugue</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/" class="btn-retour">← Revenir au choix</a>
@@ -988,6 +989,69 @@ def page_cours_46_14():
                         - 6 7<br>
                         -------<br>
                         &nbsp;&nbsp;1 0
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/cours" class="btn-retour">← Revenir aux Cours</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/cours/conjugue")
+def page_cours_conjugue():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mercredi 18 Novembre 2026</span>
+            <div class="titre-lecon">📖 Cours : 1-Conjugue (Conjugaison &amp; Arithmétique)</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte" style="color:#D90429; text-decoration:underline;">1) Conjugue le verbe « avoir » au temps présent :</div>
+            <div style="font-size:15px; line-height:2.1; font-weight:bold; color:#1E3A8A; margin-bottom:16px;">
+                ✦ <b style="color:#0D47A1;">J'</b> <span style="color:#16A34A;">ai</span><br>
+                ✦ <b style="color:#0D47A1;">Tu</b> <span style="color:#16A34A;">as</span><br>
+                ✦ <b style="color:#0D47A1;">Il, Elle</b> <span style="color:#16A34A;">a</span><br>
+                ✦ <b style="color:#0D47A1;">Nous</b> <span style="color:#16A34A;">avons</span><br>
+                ✦ <b style="color:#0D47A1;">Vous</b> <span style="color:#16A34A;">avez</span><br>
+                ✦ <b style="color:#0D47A1;">Ils, Elles</b> <span style="color:#16A34A;">ont</span>
+            </div>
+
+            <div class="cahier-ligne-texte" style="color:#D90429; text-decoration:underline;">2) Conjugue le verbe (...) au temps présent :</div>
+            <div style="background:#F0F9FF; border:2px dashed #0284C7; border-radius:12px; padding:12px; font-size:15px; line-height:2.1; margin-bottom:16px;">
+                ✦ Nous (avoir) des jolies voitures.<br>
+                &nbsp;&nbsp;&nbsp;➔ <b>Nous <span style="color:#16A34A;">avons</span> des jolies voitures.</b><br>
+                ✦ Tu (avoir) un terrain de sport.<br>
+                &nbsp;&nbsp;&nbsp;➔ <b>Tu <span style="color:#16A34A;">as</span> un terrain de sport.</b><br>
+                ✦ Il (avoir) un canard.<br>
+                &nbsp;&nbsp;&nbsp;➔ <b>Il <span style="color:#16A34A;">a</span> un canard.</b>
+            </div>
+
+            <div class="cahier-ligne-texte" style="color:#D90429; text-decoration:underline;">3) Pose et effectue :</div>
+            <table class="table-calc">
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">54 - 18 = 36</span><br><br>
+                        &nbsp;&nbsp;5 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>4<br>
+                        - 1<sub><span style="color:#DC2626;">1</span></sub> 8<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">3 6</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">92 - 46 = 46</span><br><br>
+                        &nbsp;&nbsp;9 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>2<br>
+                        - 4<sub><span style="color:#DC2626;">1</span></sub> 6<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">4 6</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">115 - 67 = 48</span><br><br>
+                        &nbsp;&nbsp;1 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>1 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>5<br>
+                        - <sub><span style="color:#DC2626;">1</span></sub> 6<sub><span style="color:#DC2626;">1</span></sub> 7<br>
+                        ---------<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#16A34A;">4 8</span>
                     </td>
                 </tr>
             </table>
@@ -1681,6 +1745,7 @@ def page_lecons_de_chose():
             <button type="button" class="btn-rose btn-option" data-url="/lecons-de-chose/volent" data-titre="LES ANIMAUX QUI VOLENT.">LES ANIMAUX QUI VOLENT.</button>
             <button type="button" class="btn-rose btn-option" data-url="/lecons-de-chose/marchent" data-titre="LES ANIMAUX QUI MARCHENT.">LES ANIMAUX QUI  MARCHENT.</button>
             <button type="button" class="btn-rose btn-option" data-url="/lecons-de-chose/rampent" data-titre="LES ANIMAUX QUI RAMPENT.">LES ANIMAUX QUI RAMPENT.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/lecons-de-chose/sautent" data-titre="LES ANIMAUX QUI SAUTENT">LES ANIMAUX QUI SAUTENT</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/" class="btn-retour">← Revenir au choix</a>
@@ -1820,6 +1885,80 @@ def page_chose_rampent():
     """
     return afficher(html)
 
+@app.route("/lecons-de-chose/sautent")
+def page_chose_sautent():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date" style="background:#0284C7;">📅 Semaine du Vendredi 20 Novembre 2026</span>
+            <div class="titre-lecon" style="color:#D90429;">LES ANIMAUX QUI SAUTENT</div>
+        </div>
+
+        <div style="background:#FEF3C7; border-left:5px solid #D97706; border-radius:10px; padding:12px; font-size:14px; line-height:2; color:#92400E; margin-bottom:14px;">
+            ✦ <b>Définition :</b> Les animaux qui <b>sautent</b> sont des animaux qui ont des <b>pattes ou des ailes</b>, mais ils se déplacent en sautant.
+        </div>
+
+        <p style="font-size:16px; font-weight:800; color:#0D47A1; margin-bottom:8px;">🦘 Exemples d'animaux qui sautent :</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-bottom:16px;">
+            <div style="background:#ECFDF5; border:2px solid #10B981; border-radius:12px; padding:10px; text-align:center; font-weight:bold; color:#065F46;">
+                <div style="font-size:28px;">🐸</div>
+                La grenouille
+            </div>
+            <div style="background:#FFF7ED; border:2px solid #F97316; border-radius:12px; padding:10px; text-align:center; font-weight:bold; color:#9A3412;">
+                <div style="font-size:28px;">🦘</div>
+                le kangourou
+            </div>
+            <div style="background:#FEF2F2; border:2px solid #F43F5E; border-radius:12px; padding:10px; text-align:center; font-weight:bold; color:#9F1239;">
+                <div style="font-size:28px;">🐇</div>
+                le lapin
+            </div>
+            <div style="background:#F0F9FF; border:2px solid #0284C7; border-radius:12px; padding:10px; text-align:center; font-weight:bold; color:#075985;">
+                <div style="font-size:28px;">🦗</div>
+                Le grillon
+            </div>
+            <div style="background:#F7FEE7; border:2px solid #65A30D; border-radius:12px; padding:10px; text-align:center; font-weight:bold; color:#3F6212;">
+                <div style="font-size:28px;">🦗</div>
+                le criquet
+            </div>
+            <div style="background:#FAF5FF; border:2px solid #9333EA; border-radius:12px; padding:10px; text-align:center; font-weight:bold; color:#6B21A8;">
+                <div style="font-size:28px;">🪲</div>
+                la puce
+            </div>
+        </div>
+
+        <p style="font-size:15px; font-weight:800; color:#7E22CE; margin-bottom:8px;">🖍️ Colorie les animaux qui marchent et écris leurs noms en bas :</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; background:#FFFFFF; border:3px solid #80DEEA; border-radius:14px; padding:12px; margin-bottom:16px;">
+            <div style="background:#FEF9C3; border:2px solid #EAB308; border-radius:10px; padding:10px; text-align:center;">
+                <div style="font-size:26px;">🦆</div>
+                <b style="color:#15803D;">le canard</b><br><span style="font-size:11px; color:#65A30D;">✓ Colorié (marche)</span>
+            </div>
+            <div style="background:#F3E8FF; border:2px solid #A855F7; border-radius:10px; padding:10px; text-align:center;">
+                <div style="font-size:26px;">🪲</div>
+                <b style="color:#7E22CE;">la mante</b><br><span style="font-size:11px; color:#9333EA;">✓ Coloriée (marche)</span>
+            </div>
+            <div style="background:#FFEDD5; border:2px solid #F97316; border-radius:10px; padding:10px; text-align:center;">
+                <div style="font-size:26px;">🐪</div>
+                <b style="color:#C2410C;">le chameau</b><br><span style="font-size:11px; color:#EA580C;">✓ Colorié (marche)</span>
+            </div>
+            <div style="background:#E2E8F0; border:2px solid #475569; border-radius:10px; padding:10px; text-align:center;">
+                <div style="font-size:26px;">🐄</div>
+                <b style="color:#1E293B;">la vache</b><br><span style="font-size:11px; color:#475569;">✓ Coloriée (marche)</span>
+            </div>
+            <div style="background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:10px; padding:10px; text-align:center; color:#64748B;">
+                <div style="font-size:26px;">🦈</div>
+                le requin<br><span style="font-size:11px;">(nage — non colorié)</span>
+            </div>
+            <div style="background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:10px; padding:10px; text-align:center; color:#64748B;">
+                <div style="font-size:26px;">🐢</div>
+                la tortue<br><span style="font-size:11px;">(non coloriée)</span>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/lecons-de-chose" class="btn-retour">← Revenir aux Leçons de chose</a>
+        </div>
+    """
+    return afficher(html)
+
 # =============================================================================
 # FRANÇAIS - MENUS
 # =============================================================================
@@ -1926,6 +2065,8 @@ def page_lecons_orthographe():
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/orthographe/son-i" data-titre='Le son "i".'>Le son "i".</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/orthographe/son-e" data-titre='Le son "e".'>Le son "e".</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/orthographe/son-ar" data-titre="Le son ar">Le son ar</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/orthographe/son-or" data-titre="Le son or">Le son or</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/orthographe/articles-definis" data-titre="Les articles définis">Les articles définis</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/lecons" class="btn-retour">← Revenir aux leçons de Français</a>
@@ -2056,6 +2197,85 @@ def page_lecon_ortho_son_ar():
     """
     return afficher(html)
 
+@app.route("/francais/lecons/orthographe/son-or")
+def page_lecon_ortho_son_or():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 16 Novembre 2026</span>
+            <div class="titre-lecon">📖 Orthographe : Le son « or »</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div style="border:2px solid #4361EE; border-radius:10px; padding:8px 14px; background:#F0F4FF; text-align:center; margin-bottom:14px;">
+                <b style="color:#D90429; font-size:18px;">Le son « or »</b><br>
+                <span style="color:#DC2626; font-weight:bold; font-size:15px;">ors — ort — ord</span>
+            </div>
+
+            <div style="margin-bottom:14px; line-height:2.1;">
+                ✦ <b style="color:#15803D; font-size:16px;">ors :</b>
+                <span style="color:#1E3A8A; font-weight:bold;">
+                    deh<b style="color:#D90429;">ors</b> &nbsp;—&nbsp; le h<b style="color:#D90429;">ors</b> d'oeuvre &nbsp;—&nbsp; h<b style="color:#D90429;">ors</b>
+                </span>
+            </div>
+
+            <div style="margin-bottom:14px; line-height:2.1;">
+                ✦ <b style="color:#15803D; font-size:16px;">ort :</b>
+                <span style="color:#1E3A8A; font-weight:bold;">
+                    le transp<b style="color:#D90429;">ort</b> &nbsp;—&nbsp; le p<b style="color:#D90429;">ort</b> &nbsp;—&nbsp; un ress<b style="color:#D90429;">ort</b> &nbsp;—&nbsp; le passep<b style="color:#D90429;">ort</b> &nbsp;—&nbsp; le sp<b style="color:#D90429;">ort</b> &nbsp;—&nbsp; t<b style="color:#D90429;">ort</b>
+                </span>
+            </div>
+
+            <div style="line-height:2.1;">
+                ✦ <b style="color:#15803D; font-size:16px;">ord :</b>
+                <span style="color:#1E3A8A; font-weight:bold;">
+                    le rec<b style="color:#D90429;">ord</b> &nbsp;—&nbsp; le b<b style="color:#D90429;">ord</b> &nbsp;—&nbsp; N<b style="color:#D90429;">ord</b> &nbsp;—&nbsp; d'acc<b style="color:#D90429;">ord</b>
+                </span>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/lecons/orthographe" class="btn-retour">← Revenir aux Leçons d'Orthographe</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/lecons/orthographe/articles-definis")
+def page_lecon_ortho_articles_definis():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mardi 17 Novembre 2026</span>
+            <div class="titre-lecon">📖 Orthographe : Les articles définis</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div style="border:2px solid #D90429; border-radius:10px; padding:8px 14px; background:#FFF1F2; text-align:center; margin-bottom:14px;">
+                <b style="color:#D90429; font-size:18px;">Les articles définis</b>
+            </div>
+
+            <div style="margin-bottom:14px; font-size:15px; line-height:2.1;">
+                ✦ <b style="color:#D90429; font-size:17px;">le :</b> s'emploie devant un nom <b style="color:#0D47A1;">masculin singulier</b>
+                <i>(une seule chose, une seule personne, un seul animal)</i>.
+            </div>
+
+            <div style="margin-bottom:14px; font-size:15px; line-height:2.1;">
+                ✦ <b style="color:#D90429; font-size:17px;">la :</b> s'emploie devant un nom <b style="color:#15803D;">féminin singulier</b>.
+            </div>
+
+            <div style="background:#FEF9C3; border-left:4px solid #CA8A04; padding:8px 12px; border-radius:8px; font-weight:bold; color:#854D0E; margin-bottom:14px;">
+                💡 singulier ➔ seul.
+            </div>
+
+            <div style="font-size:15px; line-height:2.1;">
+                ✦ <b style="color:#D90429; font-size:17px;">l' :</b> s'emploie devant un nom <b style="color:#D90429;">masculin ou féminin</b> qui commence par une <b style="color:#0D47A1;">voyelle</b>.
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/lecons/orthographe" class="btn-retour">← Revenir aux Leçons d'Orthographe</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/lecons/conjugaison")
 def page_lecons_conjugaison():
     html = """
@@ -2067,6 +2287,7 @@ def page_lecons_conjugaison():
 
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/conjugaison/singulier" data-titre="Les pronoms personnels sujets au singuliers">Les pronoms personnels sujets au singuliers</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/conjugaison/pluriel" data-titre="Les PPS aux pluriels">Les PPS aux pluriels</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/conjugaison/verbe-avoir" data-titre="Verbe avoir au temps présent">Verbe avoir au temps présent</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/lecons" class="btn-retour">← Revenir aux leçons de Français</a>
@@ -2149,6 +2370,39 @@ def page_lecon_conj_pluriel():
             ✦ On emploie <b style="color:#D81B60;">Elles</b> quand il s'agit de 2 ou plusieurs filles, personnes féminines ou animaux.<br>
             <i>Exemple :</i> Amina et Marie jouent. ➔ <b style="color:#0D47A1;">Elles</b> jouent.
         </div>
+        <div style="text-align:center;">
+            <a href="/francais/lecons/conjugaison" class="btn-retour">← Revenir aux Leçons de Conjugaison</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/lecons/conjugaison/verbe-avoir")
+def page_lecon_conj_verbe_avoir():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mercredi 18 Novembre 2026</span>
+            <div class="titre-lecon">📖 Conjugaison : Verbe « avoir » au temps présent</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div style="border:2px solid #D90429; border-radius:10px; padding:8px 14px; background:#FFF1F2; text-align:center; margin-bottom:14px;">
+                <b style="color:#D90429; font-size:18px;">Verbe « avoir » au temps présent</b>
+            </div>
+
+            <div style="font-size:16px; line-height:2.2; font-weight:bold; color:#1E3A8A; margin-bottom:14px;">
+                ✦ <b style="color:#0D47A1;">J'</b> <span style="color:#16A34A;">ai</span><br>
+                ✦ <b style="color:#0D47A1;">Tu</b> <span style="color:#16A34A;">as</span><br>
+                ✦ <b style="color:#0D47A1;">Il, elle</b> <span style="color:#16A34A;">a</span><br>
+                ✦ <b style="color:#0D47A1;">Nous</b> <span style="color:#16A34A;">avons</span><br>
+                ✦ <b style="color:#0D47A1;">Vous</b> <span style="color:#16A34A;">avez</span><br>
+                ✦ <b style="color:#0D47A1;">Ils, elles</b> <span style="color:#16A34A;">ont</span>
+            </div>
+
+            <div style="background:#E8F5E9; border-left:4px solid #16A34A; border-radius:8px; padding:10px 12px; font-weight:bold; color:#166534;">
+                💡 <b>Règle :</b> On emploie le verbe « <span style="color:#D90429;">avoir</span> » quand on possède quelque chose.
+            </div>
+        </div>
+
         <div style="text-align:center;">
             <a href="/francais/lecons/conjugaison" class="btn-retour">← Revenir aux Leçons de Conjugaison</a>
         </div>
@@ -2440,6 +2694,7 @@ def page_exercices_dictee():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/22-octobre" data-titre="1-Jeudi 22 Octobre (La propreté est bon pour nous...)">1-Jeudi 22 Octobre (La propreté est bon pour nous...)</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/30-octobre" data-titre="1-Ils montrent la carte de l'étudiant.">1-Ils montrent la carte de l'étudiant.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/13-novembre" data-titre="Elle prépare un bon achard">Elle prépare un bon achard</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/19-novembre" data-titre="1-Nous avons tort">1-Nous avons tort</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -2590,6 +2845,26 @@ def page_ex_dictee_13_nov():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/dictee/19-novembre")
+def page_ex_dictee_19_nov():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Jeudi 19 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Dictée préparée — 1-Nous avons tort</div>
+        </div>
+        <div class="cadre-contenu" style="font-size:16px; line-height:2.4;">
+            ✦ <b style="color:#0D47A1;">Nous avons tort.</b><br>
+            ✦ <b style="color:#0D47A1;">Marc écrira son problème au tableau.</b><br>
+            ✦ <b style="color:#0D47A1;">La directrice dirige notre école.</b><br>
+            ✦ <b style="color:#0D47A1;">Vous avez le transport pour Paris.</b><br>
+            ✦ <b style="color:#0D47A1;">J'ai trouvé un canard dehors.</b>
+        </div>
+        <div style="text-align:center;">
+            <a href="/francais/exercices/dictee" class="btn-retour">← Revenir aux Dictées préparées</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/orthographe")
 def page_exercices_orthographe():
     html = """
@@ -2606,6 +2881,7 @@ def page_exercices_orthographe():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/oeu-oei" data-titre="1-Complete par oeu, oei.">1-Complete par oeu, oei.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/dictee" data-titre="1-Dictée.">1-Dictée.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/ard-art" data-titre="1-ard,art">1-ard,art</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/ors-ort" data-titre="1-ors,ort">1-ors,ort</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -2813,6 +3089,40 @@ def page_ex_ortho_ard_art():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/orthographe/ors-ort")
+def page_ex_ortho_ors_ort():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 16 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Orthographe — 1-ors, ort</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">1) Complète par ors, ort :</p>
+        <div style="background:#fff; border:2px solid #80DEEA; border-radius:10px; padding:10px; font-size:15px; line-height:2; margin-bottom:12px;">
+            ✦ deh<b style="color:#D81B60;">ors</b> &nbsp;—&nbsp; le sp<b style="color:#D81B60;">ort</b> &nbsp;—&nbsp; h<b style="color:#D81B60;">ors</b> &nbsp;—&nbsp; transp<b style="color:#D81B60;">ort</b>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">2) Trouves 2 mots qui contiennent « ord » :</p>
+        <div style="background:#E1F5FE; border-radius:10px; padding:8px; font-size:15px; font-weight:bold; color:#15803D; margin-bottom:12px;">
+            ✦ Nord &nbsp;—&nbsp; accord
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">3) Trouves 2 mots contenant « ors » :</p>
+        <div style="background:#E1F5FE; border-radius:10px; padding:8px; font-size:15px; font-weight:bold; color:#15803D; margin-bottom:12px;">
+            ✦ hors &nbsp;—&nbsp; dehors
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">4) Dictée des mots :</p>
+        <div style="background:#fff; border:2px solid #80DEEA; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#1E3A8A;">
+            Le bord &nbsp;—&nbsp; un sport &nbsp;—&nbsp; dehors &nbsp;—&nbsp; le record
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/orthographe" class="btn-retour">← Revenir aux exercices d'Orthographe</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/conjugaison")
 def page_exercices_conjugaison():
     html = """
@@ -2829,6 +3139,7 @@ def page_exercices_conjugaison():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/pluriels" data-titre="1-Remplace par les mots soulignés par les PPS au pluriels">1-Remplace par les mots soulignés par les PPS au pluriels</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/remplace-soulignes" data-titre="1-Remplace les mots soulignés.">1-Remplace les mots soulignés.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/pp-sujets" data-titre="1-PP Sujets">1-PP Sujets</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/verbe-avoir" data-titre="1-Verbe avoir">1-Verbe avoir</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3016,6 +3327,32 @@ def page_ex_conj_pp_sujets():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/conjugaison/verbe-avoir")
+def page_ex_conj_verbe_avoir():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mercredi 18 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Conjugaison — 1-Verbe avoir</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:8px;">1) Conjugue le verbe « avoir » au temps présent :</p>
+        <div class="cahier-seyes">
+            <div style="font-size:16px; line-height:2.2; font-weight:bold; color:#1E3A8A;">
+                ✦ <b style="color:#0D47A1;">j'</b> <span style="color:#16A34A;">ai</span><br>
+                ✦ <b style="color:#0D47A1;">Tu</b> <span style="color:#16A34A;">as</span><br>
+                ✦ <b style="color:#0D47A1;">Il, Elle</b> <span style="color:#16A34A;">a</span><br>
+                ✦ <b style="color:#0D47A1;">Nous</b> <span style="color:#16A34A;">avons</span><br>
+                ✦ <b style="color:#0D47A1;">Vous</b> <span style="color:#16A34A;">avez</span><br>
+                ✦ <b style="color:#0D47A1;">Ils</b> <span style="color:#16A34A;">ont</span>, <b style="color:#0D47A1;">elles</b> <span style="color:#16A34A;">ont</span>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/conjugaison" class="btn-retour">← Revenir aux exercices de Conjugaison</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/grammaire")
 def page_exercices_grammaire():
     html = """
@@ -3032,6 +3369,7 @@ def page_exercices_grammaire():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/animal-chose-pers" data-titre="1-Complète par  animal-chose-personne..">1-Complète par  animal-chose-personne..</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/souligne-bonne-rep" data-titre="1-Souligne la bonne réponse.">1-Souligne la bonne réponse.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/minuscule-majuscule" data-titre="1-Miniscule ou majuscule">1-Miniscule ou majuscule</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/le-et-la" data-titre="1-le et la">1-le et la</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3226,6 +3564,34 @@ def page_ex_gramm_min_maj():
         <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">3) Cherche 2 noms communs :</p>
         <div style="background:#F0FDF4; border:2px dashed #16A34A; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#166534;">
             ✦ papa &nbsp;—&nbsp; ✦ cartable
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/grammaire" class="btn-retour">← Revenir aux exercices de Grammaire</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/exercices/grammaire/le-et-la")
+def page_ex_gramm_le_et_la():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mardi 17 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Grammaire — 1-le et la</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:8px;">1) Complète par le, la :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ <b style="color:#D81B60;">la</b> voiture &nbsp;—&nbsp; <b style="color:#0D47A1;">le</b> passeport &nbsp;—&nbsp; <b style="color:#D81B60;">la</b> salle<br>
+            ✦ <b style="color:#0D47A1;">le</b> garçon &nbsp;—&nbsp; <b style="color:#D81B60;">la</b> robe &nbsp;—&nbsp; <b style="color:#0D47A1;">le</b> sport<br>
+            ✦ <b style="color:#D81B60;">la</b> fille &nbsp;—&nbsp; <b style="color:#0D47A1;">le</b> stylo.
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">2) Complète par l', les :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ <b style="color:#15803D;">l'</b> article &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> étoiles &nbsp;—&nbsp; <b style="color:#15803D;">l'</b> armoire<br>
+            ✦ <b style="color:#7C3AED;">les</b> écoliers &nbsp;—&nbsp; <b style="color:#15803D;">l'</b> école &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> élèves<br>
+            ✦ <b style="color:#15803D;">l'</b> achard &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> enfants
         </div>
 
         <div style="text-align:center;">
@@ -3492,6 +3858,7 @@ def page_arithmetique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/arithmetique/addition-avec" data-titre="Addition avec retenue">Addition avec retenue</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/arithmetique/comptage-119" data-titre="Comptage de 1 en 1 de 80 à 119">Comptage de 1 en 1 de 80 à 119</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/arithmetique/soustraction-sans" data-titre="La soustraction sans retenue">La soustraction sans retenue</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/lecons/arithmetique/soustraction-avec" data-titre="Soustraction avec retenue">Soustraction avec retenue</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/lecons" class="btn-retour">← Revenir aux leçons de Mathématiques</a>
@@ -3684,6 +4051,45 @@ def page_lecon_addition_avec():
         <div style="background-color:#E1BEE7; border-radius:12px; padding:14px; font-family:monospace; font-size:17px; font-weight:bold; color:#4A148C; text-align:center;">
             26 + 37 = 63 &nbsp;&nbsp;|&nbsp;&nbsp; 15 + 26 = 41
         </div>
+        <div style="text-align:center;">
+            <a href="/mathematiques/lecons/arithmetique" class="btn-retour">← Revenir aux leçons d'Arithmétique</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/mathematiques/lecons/arithmetique/soustraction-avec")
+def page_lecon_soustraction_avec():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Jeudi 19 Novembre 2026</span>
+            <div class="titre-lecon">📖 Soustraction avec retenue</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte" style="color:#D90429; font-size:18px; text-decoration:underline; margin-bottom:14px;">
+                Soustraction avec retenue
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:30px; align-items:center; margin-top:10px; flex-wrap:wrap;">
+                <div style="background:#F0F9FF; border:2px dashed #0284C7; border-radius:12px; padding:14px 24px; font-size:20px; font-weight:bold; color:#0369A1;">
+                    55 - 29 = <span style="color:#16A34A;">26</span>
+                </div>
+
+                <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:12px; padding:14px 28px; font-family:'Courier New', Courier, monospace; font-size:22px; font-weight:bold; text-align:right;">
+                    &nbsp;&nbsp;5 <span style="color:#DC2626; font-size:13px; vertical-align:super;">1</span>5<br>
+                    - 2<sub><span style="color:#DC2626; font-size:13px;">1</span></sub> 9<br>
+                    -------<br>
+                    &nbsp;&nbsp;<span style="color:#16A34A;">2 6</span>
+                </div>
+            </div>
+
+            <div style="background:#FFF3E0; border-left:5px solid #F97316; border-radius:10px; padding:12px; margin-top:16px; font-size:14px; font-weight:bold; color:#C2410C; line-height:1.8;">
+                💡 <b>Mécanisme :</b><br>
+                • Unités : <b>5 - 9</b> est impossible ➔ on ajoute 1 dizaine (<b style="color:#DC2626;">15 - 9 = 6</b>).<br>
+                • Dizaines : on reporte la retenue <b style="color:#DC2626;">1</b> sur le 2 (<b style="color:#DC2626;">2 + 1 = 3</b>) ➔ <b>5 - 3 = 2</b>.
+            </div>
+        </div>
+
         <div style="text-align:center;">
             <a href="/mathematiques/lecons/arithmetique" class="btn-retour">← Revenir aux leçons d'Arithmétique</a>
         </div>
@@ -3975,6 +4381,7 @@ def page_exercices_arithmetique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/pose-effectue" data-titre="1-Pose et effectue.">1-Pose et effectue.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/ecris" data-titre="1-Ecris">1-Ecris</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/on-pose-effectue" data-titre="1-On pose et effectue">1-On pose et effectue</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/lettres" data-titre="1-Lettres">1-Lettres</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -4237,6 +4644,54 @@ def page_ex_arith_on_pose_effectue():
     """
     return afficher(html)
 
+@app.route("/mathematiques/exercices/arithmetique/lettres")
+def page_ex_arith_lettres():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 16 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Arithmétique — 1-Lettres</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte" style="color:#0D47A1;">1) Écris en lettres :</div>
+            <div style="background:#FFFFFF; border:2px dashed #4CAF50; border-radius:10px; padding:10px 14px; font-size:15px; font-weight:bold; color:#1B5E20; margin-bottom:16px;">
+                ✦ <b>48</b> = quarante-huit
+            </div>
+
+            <div class="cahier-ligne-texte" style="color:#0D47A1;">2) Pose et effectue :</div>
+            <table class="table-calc">
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">54 - 18 = 36</span><br><br>
+                        &nbsp;&nbsp;5 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>4<br>
+                        - 1<sub><span style="color:#DC2626;">1</span></sub> 8<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">3 6</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">92 - 46 = 46</span><br><br>
+                        &nbsp;&nbsp;9 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>2<br>
+                        - 4<sub><span style="color:#DC2626;">1</span></sub> 6<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">4 6</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">35 - 27 = 08</span><br><br>
+                        &nbsp;&nbsp;3 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>5<br>
+                        - 2<sub><span style="color:#DC2626;">1</span></sub> 7<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">0 8</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/arithmetique" class="btn-retour">← Revenir aux exercices d'Arithmétique</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/mathematiques/exercices/geometrie")
 def page_exercices_geometrie():
     html = """
@@ -4351,6 +4806,7 @@ def page_exercices_metrique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/ij-4cm" data-titre="1-Trace [IJ] = 4cm.">1-Trace [IJ] = 4cm.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/segment-ab-6cm" data-titre="1-Trace un segment [AB] de 6 cm.">1-Trace un segment [AB] de 6 cm.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/complete" data-titre="1-Complete">1-Complete</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/relie-metres" data-titre="1-Relie les mètres">1-Relie les mètres</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -4650,6 +5106,59 @@ def page_ex_met_complete():
                 - le mètre pliant<br>
                 - le mètre ruban<br>
                 - <b style="color:#16A34A; text-decoration:underline;">le mètre rigide</b> ✓
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/metrique" class="btn-retour">← Revenir aux exercices de Système Métrique</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/mathematiques/exercices/metrique/relie-metres")
+def page_ex_met_relie_metres():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Système métrique</span>
+            <div class="titre-lecon">✏️ Système métrique — 1-Relie les mètres</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte">1) Relie par des flèches :</div>
+            <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:12px; padding:12px; margin-bottom:16px; text-align:center; overflow-x:auto;">
+                <svg viewBox="0 0 380 145" style="width:100%; max-width:380px; margin:auto; display:block;">
+                    <defs>
+                        <marker id="arrow-met" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#0284C7"/>
+                        </marker>
+                    </defs>
+                    <text x="10" y="30" font-size="14" font-weight="bold" fill="#1E3A8A">le mètre ruban</text>
+                    <circle cx="135" cy="25" r="4" fill="#D90429"/>
+                    <text x="10" y="75" font-size="14" font-weight="bold" fill="#1E3A8A">le mètre pliant</text>
+                    <circle cx="135" cy="70" r="4" fill="#D90429"/>
+                    <text x="10" y="120" font-size="14" font-weight="bold" fill="#1E3A8A">le mètre rigide</text>
+                    <circle cx="135" cy="115" r="4" fill="#D90429"/>
+
+                    <circle cx="235" cy="25" r="4" fill="#16A34A"/>
+                    <text x="247" y="30" font-size="14" font-weight="bold" fill="#15803D">menuisier</text>
+                    <circle cx="235" cy="70" r="4" fill="#16A34A"/>
+                    <text x="247" y="75" font-size="14" font-weight="bold" fill="#15803D">couturière</text>
+                    <circle cx="235" cy="115" r="4" fill="#16A34A"/>
+                    <text x="247" y="120" font-size="14" font-weight="bold" fill="#15803D">marchand d'étoffe</text>
+
+                    <line x1="139" y1="27" x2="229" y2="68" stroke="#0284C7" stroke-width="2.5" marker-end="url(#arrow-met)"/>
+                    <line x1="139" y1="68" x2="229" y2="27" stroke="#0284C7" stroke-width="2.5" marker-end="url(#arrow-met)"/>
+                    <line x1="139" y1="115" x2="229" y2="115" stroke="#0284C7" stroke-width="2.5" marker-end="url(#arrow-met)"/>
+                </svg>
+            </div>
+
+            <div class="cahier-ligne-texte">2) Complète par un mètre, longueur :</div>
+            <div style="font-size:15px; line-height:2.1; margin-bottom:14px;">
+                • On emploie <b style="color:#16A34A; text-decoration:underline;">le mètre</b> pour mesurer la <b style="color:#16A34A; text-decoration:underline;">longueur</b>.
+            </div>
+
+            <div style="background:#FEFCE8; border-left:4px solid #CA8A04; padding:10px 12px; border-radius:6px; font-size:15px; line-height:1.8;">
+                <b>Quand on mesure la longueur d'une chose, on se sert d'un mètre.</b>
             </div>
         </div>
 
