@@ -1,10 +1,12 @@
 // Service Worker 100% Hors-Ligne — Programme en 11ème (VerjoOnlyElevenProgram)
 // Compatible GitHub Pages (sous-dossier ou racine) et PWABuilder Android APK
-// Inclut : Cache Hors-Ligne + Notifications Push + Rappels Quotidiens Hors-Ligne + Notification Instantanée à l'installation
+// Inclut : Cache Hors-Ligne + Notifications Push + Rappels Horaires Hors-Ligne (toutes les 1h) + Notification Instantanée à l'installation
 
 const CACHE_NAME = 'prog-11eme-offline-v3';
 const NOTIF_DB_NAME = 'verjo-eleven-notif-db';
 const NOTIF_STORE_NAME = 'state';
+const ONE_HOUR_MS = 60 * 60 * 1000;
+const HOURLY_SCHEDULE_COUNT = 48; // Programme les 48 prochaines heures (1 notification / heure)
 
 // Fichiers essentiels mis en cache dès l'installation (chemins relatifs ./)
 const CORE_ASSETS = [
@@ -18,7 +20,7 @@ const CORE_ASSETS = [
   './apple-touch-icon.png'
 ];
 
-// Messages quotidiens différents chaque jour pour rappeler de regarder VerjoOnlyElevenProgram
+// Messages différents qui tournent à chaque notification pour rappeler de regarder VerjoOnlyElevenProgram
 const DAILY_REMINDERS = [
   {
     title: 'VerjoOnlyElevenProgram — Rappel du jour 📚',
@@ -121,12 +123,19 @@ async function setNotifState(key, value) {
   }
 }
 
-function getTodayKey() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
+function getTodayKey(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
+}
+
+function getHourKey(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  const h = String(date.getHours()).padStart(2, '0');
+  return `${y}-${m}-${d}-${h}`;
 }
 
 function getDayOfYear() {
@@ -134,6 +143,10 @@ function getDayOfYear() {
   const start = new Date(now.getFullYear(), 0, 0);
   const diff = now - start;
   return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+function getHourIndex(date = new Date()) {
+  return Math.floor(date.getTime() / ONE_HOUR_MS);
 }
 
 async function checkNotificationPermission() {
@@ -149,11 +162,14 @@ async function sendInstantInstallNotification(forceIfNotSent = true) {
   const alreadySent = await getNotifState('installedNotifSent', false);
   if (alreadySent && forceIfNotSent) return;
 
+  const now = Date.now();
   await setNotifState('installedNotifSent', true);
   await setNotifState('appInstalled', true);
+  await setNotifState('lastHourlyNotifAt', now);
+  await setNotifState('lastHourKey', getHourKey());
 
   return self.registration.showNotification('VerjoOnlyElevenProgram installé ! 🎉', {
-    body: "Bravo ! L'application VerjoOnlyElevenProgram est installée. Tu recevras un rappel différent chaque jour, même hors-ligne !",
+    body: "Bravo ! L'application VerjoOnlyElevenProgram est installée. Tu recevras un rappel différent chaque heure, même hors-ligne !",
     icon: './pwa-192x192.png',
     badge: './pwa-192x192.png',
     tag: 'verjo-first-install',
@@ -163,38 +179,56 @@ async function sendInstantInstallNotification(forceIfNotSent = true) {
   });
 }
 
-// Envoi d'une notification différente chaque jour (même fermé et offline, si installé & accepté)
-async function checkAndSendDailyReminder() {
+// Envoi d'une notification différente chaque heure (même fermé et offline, si installé & accepté)
+async function checkAndSendHourlyReminder() {
   if (!(await checkNotificationPermission())) return;
 
   const isInstalled = await getNotifState('appInstalled', false);
   if (!isInstalled) return;
 
-  const today = getTodayKey();
-  const lastDate = await getNotifState('lastDailyDate', '');
-  if (lastDate === today) return;
+  const now = Date.now();
+  const currentHourKey = getHourKey();
+  const lastHourKey = await getNotifState('lastHourKey', '');
+  const lastHourlyAt = await getNotifState('lastHourlyNotifAt', 0);
 
-  const savedIndex = await getNotifState('dailyIndex', getDayOfYear());
-  const index = Number.isInteger(savedIndex)
-    ? savedIndex % DAILY_REMINDERS.length
-    : getDayOfYear() % DAILY_REMINDERS.length;
+  if (lastHourKey === currentHourKey) return;
+  if (lastHourlyAt && now - lastHourlyAt < ONE_HOUR_MS) return;
+
+  const savedHourlyIndex = await getNotifState('hourlyIndex', null);
+  const savedDailyIndex = await getNotifState('dailyIndex', getHourIndex());
+  const rawIndex = Number.isInteger(savedHourlyIndex)
+    ? savedHourlyIndex
+    : Number.isInteger(savedDailyIndex)
+      ? savedDailyIndex
+      : getHourIndex();
+
+  const index = ((rawIndex % DAILY_REMINDERS.length) + DAILY_REMINDERS.length) % DAILY_REMINDERS.length;
   const reminder = DAILY_REMINDERS[index];
+  const nextIndex = (index + 1) % DAILY_REMINDERS.length;
 
-  await setNotifState('lastDailyDate', today);
-  await setNotifState('dailyIndex', (index + 1) % DAILY_REMINDERS.length);
+  await setNotifState('lastHourlyNotifAt', now);
+  await setNotifState('lastHourKey', currentHourKey);
+  await setNotifState('lastDailyDate', getTodayKey());
+  await setNotifState('hourlyIndex', nextIndex);
+  await setNotifState('dailyIndex', nextIndex);
 
   return self.registration.showNotification(reminder.title, {
     body: reminder.body,
     icon: './pwa-192x192.png',
     badge: './pwa-192x192.png',
-    tag: 'verjo-daily-reminder-' + today,
+    tag: 'verjo-hourly-reminder-' + currentHourKey,
     renotify: true,
     vibrate: [150, 80, 150],
     data: { url: './' }
   });
 }
 
-// Programmation de déclencheurs locaux hors-ligne (TimestampTrigger si supporté) pour les 14 prochains jours
+// Alias conservé pour compatibilité avec les appels existants
+async function checkAndSendDailyReminder() {
+  return checkAndSendHourlyReminder();
+}
+
+// Programmation de déclencheurs locaux hors-ligne (TimestampTrigger si supporté) toutes les 1 heure (48h d'avance)
 async function scheduleUpcomingOfflineTriggers() {
   if (!(await checkNotificationPermission())) return;
   if (typeof TimestampTrigger === 'undefined') return;
@@ -205,25 +239,31 @@ async function scheduleUpcomingOfflineTriggers() {
   try {
     const existing = await self.registration.getNotifications({ includeTriggered: true });
     const existingTags = new Set(existing.map((n) => n.tag));
-    const baseDay = getDayOfYear();
+    const lastHourlyAt = await getNotifState('lastHourlyNotifAt', 0);
+    const baseHour = getHourIndex();
 
-    for (let offset = 1; offset <= 14; offset++) {
+    for (let offset = 1; offset <= HOURLY_SCHEDULE_COUNT; offset++) {
       const target = new Date();
-      target.setDate(target.getDate() + offset);
-      target.setHours(9, 0, 0, 0);
+      target.setMinutes(0, 0, 0);
+      target.setHours(target.getHours() + offset);
 
-      const y = target.getFullYear();
-      const m = String(target.getMonth() + 1).padStart(2, '0');
-      const d = String(target.getDate()).padStart(2, '0');
-      const tag = `verjo-scheduled-${y}-${m}-${d}`;
+      // Évite de déclencher trop tôt juste après la notification d'installation ou la dernière notif
+      if (lastHourlyAt && target.getTime() - lastHourlyAt < ONE_HOUR_MS / 2) {
+        continue;
+      }
+
+      const hourKey = getHourKey(target);
+      const tag = `verjo-scheduled-${hourKey}`;
 
       if (!existingTags.has(tag)) {
-        const msg = DAILY_REMINDERS[(baseDay + offset) % DAILY_REMINDERS.length];
+        const msg = DAILY_REMINDERS[(baseHour + offset) % DAILY_REMINDERS.length];
         await self.registration.showNotification(msg.title, {
           body: msg.body,
           icon: './pwa-192x192.png',
           badge: './pwa-192x192.png',
           tag,
+          renotify: true,
+          vibrate: [150, 80, 150],
           showTrigger: new TimestampTrigger(target.getTime()),
           data: { url: './' }
         });
@@ -276,7 +316,7 @@ self.addEventListener('push', (event) => {
   event.waitUntil((async () => {
     if (!(await checkNotificationPermission())) return;
 
-    const reminder = DAILY_REMINDERS[getDayOfYear() % DAILY_REMINDERS.length];
+    const reminder = DAILY_REMINDERS[getHourIndex() % DAILY_REMINDERS.length];
     let title = reminder.title;
     let body = reminder.body;
     let url = './';
@@ -293,11 +333,14 @@ self.addEventListener('push', (event) => {
       }
     }
 
+    await setNotifState('lastHourlyNotifAt', Date.now());
+    await setNotifState('lastHourKey', getHourKey());
+
     await self.registration.showNotification(title, {
       body,
       icon: './pwa-192x192.png',
       badge: './pwa-192x192.png',
-      tag: 'verjo-push-' + getTodayKey(),
+      tag: 'verjo-push-' + getHourKey(),
       renotify: true,
       vibrate: [200, 100, 200],
       data: { url }
@@ -305,20 +348,20 @@ self.addEventListener('push', (event) => {
   })());
 });
 
-// Synchronisation périodique en arrière-plan (rappel quotidien même fermé et offline)
+// Synchronisation périodique en arrière-plan (rappel horaire même fermé et offline)
 self.addEventListener('periodicsync', (event) => {
-  if (event.tag === 'verjo-daily-reminder') {
+  if (event.tag === 'verjo-hourly-reminder' || event.tag === 'verjo-daily-reminder') {
     event.waitUntil(
-      checkAndSendDailyReminder().then(() => scheduleUpcomingOfflineTriggers())
+      checkAndSendHourlyReminder().then(() => scheduleUpcomingOfflineTriggers())
     );
   }
 });
 
 // Background Sync fallback
 self.addEventListener('sync', (event) => {
-  if (event.tag === 'verjo-daily-check') {
+  if (event.tag === 'verjo-hourly-check' || event.tag === 'verjo-daily-check') {
     event.waitUntil(
-      checkAndSendDailyReminder().then(() => scheduleUpcomingOfflineTriggers())
+      checkAndSendHourlyReminder().then(() => scheduleUpcomingOfflineTriggers())
     );
   }
 });
@@ -342,7 +385,7 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-// Communication avec la page (permission acceptée, app installée, vérification quotidienne)
+// Communication avec la page (permission acceptée, app installée, vérification horaire / quotidienne)
 self.addEventListener('message', (event) => {
   const data = event.data || {};
   if (data.type === 'APP_INSTALLED') {
@@ -363,7 +406,7 @@ self.addEventListener('message', (event) => {
       await sendInstantInstallNotification(true);
       await scheduleUpcomingOfflineTriggers();
     })());
-  } else if (data.type === 'CHECK_DAILY_NOTIF') {
+  } else if (data.type === 'CHECK_HOURLY_NOTIF' || data.type === 'CHECK_DAILY_NOTIF') {
     event.waitUntil((async () => {
       if (data.granted) {
         await setNotifState('notifPermissionGranted', true);
@@ -371,7 +414,7 @@ self.addEventListener('message', (event) => {
       if (data.installed) {
         await setNotifState('appInstalled', true);
       }
-      await checkAndSendDailyReminder();
+      await checkAndSendHourlyReminder();
       await scheduleUpcomingOfflineTriggers();
     })());
   }
@@ -390,6 +433,10 @@ self.addEventListener('fetch', (event) => {
 
   // Pour les navigations (changement de page), toujours servir index.html hors-ligne
   if (event.request.mode === 'navigate') {
+    event.waitUntil(
+      checkAndSendHourlyReminder().then(() => scheduleUpcomingOfflineTriggers())
+    );
+
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true }).then((cached) => {
         if (cached) return cached;
