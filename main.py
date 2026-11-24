@@ -559,6 +559,8 @@ def page_dessin():
             <button type="button" class="btn-rose btn-option" data-url="/dessin/carotte" data-titre="1- Carotte">1- Carotte</button>
             <button type="button" class="btn-rose btn-option" data-url="/dessin/cartable" data-titre="2- Cartable">2- Cartable</button>
             <button type="button" class="btn-rose btn-option" data-url="/dessin/fille" data-titre="Fille">Fille</button>
+            <button type="button" class="btn-rose btn-option" data-url="/dessin/crayon" data-titre="Crayon">Crayon</button>
+            <button type="button" class="btn-rose btn-option" data-url="/dessin/princesse" data-titre="Princesse">Princesse</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/" class="btn-retour">← Revenir au choix</a>
@@ -757,6 +759,184 @@ def page_dessin_fille():
                 </div>
             </div>
             <div class="ruban-cote"><span>🌸</span><span>🎒</span><span>👧</span><span>🌟</span><span>⭐</span></div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/dessin" class="btn-retour">← Revenir au choix du Dessin</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/dessin/crayon")
+def page_dessin_crayon():
+    pdf_etapes = charger_pdf_en_base64_images("crayon.pdf") or charger_pdf_en_base64_images("Crayon.pdf")
+    pdf_crayon = charger_pdf_en_base64_images("crayon1.pdf") or charger_pdf_en_base64_images("Crayon1.pdf")
+
+    bloc_etapes_pdf = (
+        "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #0284C7; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in pdf_etapes
+        ])
+        if pdf_etapes
+        else '<p style="background:#F0F9FF; border:2px dashed #0284C7; border-radius:10px; padding:10px; font-size:13px; color:#0369A1; margin-bottom:10px;">Document crayon.pdf non détecté à côté du script (Les 6 étapes ci-dessous restent actives).</p>'
+    )
+
+    bloc_crayon_pdf = (
+        "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #F59E0B; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in pdf_crayon
+        ])
+        if pdf_crayon
+        else '<p style="background:#FFFBEB; border:2px dashed #F59E0B; border-radius:10px; padding:10px; font-size:13px; color:#B45309; margin-bottom:12px;">Document crayon1.pdf non détecté à côté du script (Placez crayon1.pdf à côté du script).</p>'
+    )
+
+    html = f"""
+        <div style="text-align:center; margin-bottom:12px;">
+            <span class="badge-date" style="background:#0284C7;">✏️ Atelier Dessin : Comment dessiner un Crayon Kawaii</span>
+        </div>
+
+        <div class="dessin-wrapper">
+            <div class="ruban-cote"><span>✏️</span><span>⭐</span><span>🎨</span><span>🖍️</span><span>✨</span></div>
+            <div class="dessin-contenu" style="border-color:#0284C7;">
+                <p style="font-size:16px; font-weight:800; color:#0369A1; margin-bottom:8px;">📘 Étapes : crayon.pdf</p>
+                {bloc_etapes_pdf}
+
+                <p style="font-size:16px; font-weight:800; color:#D97706; margin-top:12px; margin-bottom:8px;">🖍️ Dessin : crayon1.pdf</p>
+                {bloc_crayon_pdf}
+
+                <div style="background:#F0F9FF; border:2px solid #38BDF8; border-radius:14px; padding:14px; margin-top:12px;">
+                    <p style="font-size:18px; font-weight:900; color:#0284C7; text-align:center; margin-bottom:4px;">
+                        ✏️ How to Draw a Cute Kawaii Pencil — 6 Easy Steps!
+                    </p>
+                    <p style="text-align:center; font-size:13px; color:#6B7280; font-weight:bold; margin-bottom:12px;">
+                        Il te faut : crayon • papier • gomme — Suis ces 6 étapes faciles pas à pas !
+                    </p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 1 • Draw the pencil body :</b><br>
+                            Tracer un grand rectangle allongé aux coins arrondis pour le corps du crayon.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 2 • Add the pencil tip :</b><br>
+                            Ajouter un triangle en bas pour la pointe en bois, la petite mine et les traits du corps.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 3 • Draw the metal band :</b><br>
+                            Dessiner une petite bande près du sommet pour la bague métallique (virole).
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 4 • Add the eraser on top :</b><br>
+                            Dessiner une gomme bien arrondie juste au-dessus de la bague.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#0284C7;">Étape 5 • Draw the cute kawaii face :</b><br>
+                            Ajouter deux grands yeux brillants, des joues roses et un joli sourire !
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:10px; padding:10px;">
+                            <b style="color:#D81B60;">Étape 6 • Add details &amp; finish! :</b><br>
+                            Ajouter des rayures, de petites vagues au col, ombrer légèrement et dessiner des étoiles ✨ !
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ruban-cote"><span>🌸</span><span>📐</span><span>✏️</span><span>🌟</span><span>⭐</span></div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/dessin" class="btn-retour">← Revenir au choix du Dessin</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/dessin/princesse")
+def page_dessin_princesse():
+    pdf_etapes = charger_pdf_en_base64_images("princesse.pdf") or charger_pdf_en_base64_images("Princesse.pdf")
+    pdf_princesse = charger_pdf_en_base64_images("princesse1.pdf") or charger_pdf_en_base64_images("Princesse1.pdf")
+
+    bloc_etapes_pdf = (
+        "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #EC4899; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in pdf_etapes
+        ])
+        if pdf_etapes
+        else '<p style="background:#FDF2F8; border:2px dashed #EC4899; border-radius:10px; padding:10px; font-size:13px; color:#9D174D; margin-bottom:10px;">Document princesse.pdf non détecté à côté du script (Les étapes ci-dessous restent actives).</p>'
+    )
+
+    bloc_princesse_pdf = (
+        "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #A855F7; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in pdf_princesse
+        ])
+        if pdf_princesse
+        else '<p style="background:#FAF5FF; border:2px dashed #A855F7; border-radius:10px; padding:10px; font-size:13px; color:#6B21A8; margin-bottom:12px;">Document princesse1.pdf non détecté à côté du script (Placez princesse1.pdf à côté du script).</p>'
+    )
+
+    html = f"""
+        <div style="text-align:center; margin-bottom:12px;">
+            <span class="badge-date" style="background:#EC4899;">👑 Atelier Dessin : Comment dessiner une Princesse</span>
+        </div>
+
+        <div class="dessin-wrapper">
+            <div class="ruban-cote"><span>👑</span><span>⭐</span><span>🎨</span><span>💖</span><span>✨</span></div>
+            <div class="dessin-contenu" style="border-color:#EC4899;">
+                <p style="font-size:16px; font-weight:800; color:#DB2777; margin-bottom:8px;">📘 Étapes : princesse.pdf</p>
+                {bloc_etapes_pdf}
+
+                <p style="font-size:16px; font-weight:800; color:#7E22CE; margin-top:12px; margin-bottom:8px;">🖍️ Dessin : princesse1.pdf</p>
+                {bloc_princesse_pdf}
+
+                <div style="background:#FDF2F8; border:2px solid #F472B6; border-radius:14px; padding:14px; margin-top:12px;">
+                    <p style="font-size:18px; font-weight:900; color:#DB2777; text-align:center; margin-bottom:4px;">
+                        👑 How to Draw a Princess — 11 Easy Steps
+                    </p>
+                    <p style="text-align:center; font-size:13px; color:#6B7280; font-weight:bold; margin-bottom:12px;">
+                        Astuce : Utilise un crayon léger au début, puis repasse et colorie ta princesse !
+                    </p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 1 • Tête :</b><br>
+                            Tracer un cercle pour la tête (Draw a circle for the head).
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 2 • Robe :</b><br>
+                            Tracer la ligne centrale du corps et la forme triangulaire évasée de la robe.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 3 • Épaules &amp; taille :</b><br>
+                            Esquisser les épaules, les manches bouffantes, la taille et les bras.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 4 • Couronne :</b><br>
+                            Ajouter la couronne à pointes au sommet de la tête.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 5 • Contour cheveux :</b><br>
+                            Tracer le contour de la chevelure autour du visage et sous la couronne.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 6 • Cheveux longs :</b><br>
+                            Dessiner les longs cheveux ondulés sur les épaules et finir les bras et mains.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 7 • Visage :</b><br>
+                            Ajouter les grands yeux avec cils, le nez, le joli sourire et les boucles d'oreilles.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#DB2777;">Étape 8 • Détails de la robe :</b><br>
+                            Dessiner le corsage festonné, la ceinture et les plis ondulés en bas de la jupe.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#7E22CE;">Étape 9 • Joyaux &amp; mèches :</b><br>
+                            Ajouter les perles et le joyau violet sur la couronne, la boucle et les mèches.
+                        </div>
+                        <div style="background:#FFFFFF; border:2px solid #FBCFE8; border-radius:10px; padding:10px;">
+                            <b style="color:#D81B60;">Étape 10 • Coloriage final :</b><br>
+                            Colorier les cheveux en blond doré, la couronne dorée et la belle robe rose !
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ruban-cote"><span>🌸</span><span>💎</span><span>👑</span><span>🌟</span><span>⭐</span></div>
         </div>
 
         <div style="text-align:center;">
