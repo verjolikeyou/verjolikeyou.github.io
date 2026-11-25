@@ -4,7 +4,8 @@ import os
 import sys
 import base64
 from pathlib import Path
-from flask import Flask, render_template_string, request, redirect, url_for, send_from_directory
+from urllib.parse import quote
+from flask import Flask, render_template_string, request, redirect, url_for, send_from_directory, send_file, abort
 
 app = Flask(__name__)
 
@@ -22,11 +23,30 @@ def dossier_application():
         return Path(sys.executable).resolve().parent
     return Path(__file__).resolve().parent
 
-def charger_pdf_en_base64_images(nom_pdf, max_pages=5):
+def trouver_fichier_pdf(nom_pdf):
+    """Recherche un fichier PDF à côté du script ou dans pdfs/ et pdf/ (insensible à la casse)."""
+    base = dossier_application()
+    variantes = [nom_pdf, nom_pdf.replace(" ", "_"), nom_pdf.replace("_", " ")]
+    dossiers = [base, base / "pdfs", base / "pdf"]
+    for d in dossiers:
+        if not d.is_dir():
+            continue
+        for v in variantes:
+            c = d / v
+            if c.is_file():
+                return c
+        cible_low = nom_pdf.lower().replace("_", " ")
+        for item in d.iterdir():
+            if item.is_file() and item.suffix.lower() == ".pdf":
+                if item.name.lower().replace("_", " ") == cible_low:
+                    return item
+    return None
+
+def charger_pdf_en_base64_images(nom_pdf, max_pages=20):
     """Convertit un PDF en images base64 si PyMuPDF (fitz) est disponible."""
-    chemin = dossier_application() / nom_pdf
+    chemin = trouver_fichier_pdf(nom_pdf)
     images = []
-    if not chemin.is_file():
+    if not chemin or not chemin.is_file():
         return images
     try:
         import fitz
@@ -41,6 +61,47 @@ def charger_pdf_en_base64_images(nom_pdf, max_pages=5):
     except Exception as e:
         print(f"Erreur lors de la lecture du PDF {nom_pdf}: {e}")
     return images
+
+@app.route("/pdf/<path:nom_pdf>")
+def servir_pdf(nom_pdf):
+    chemin = trouver_fichier_pdf(Path(nom_pdf).name)
+    if not chemin or not chemin.is_file():
+        abort(404)
+    return send_file(str(chemin), mimetype="application/pdf")
+
+@app.route("/pdf.min.js")
+def servir_pdfjs():
+    for d in [dossier_application(), dossier_application() / "static"]:
+        if (d / "pdf.min.js").is_file():
+            return send_from_directory(str(d), "pdf.min.js", mimetype="application/javascript")
+    abort(404)
+
+@app.route("/pdf.worker.min.js")
+def servir_pdfjs_worker():
+    for d in [dossier_application(), dossier_application() / "static"]:
+        if (d / "pdf.worker.min.js").is_file():
+            return send_from_directory(str(d), "pdf.worker.min.js", mimetype="application/javascript")
+    abort(404)
+
+def rendre_bloc_pdf(nom_pdf, titre_bloc, couleur, candidats):
+    """Retourne le rendu base64 si PyMuPDF est disponible, sinon le lecteur PDF.js navigateur/APK."""
+    imgs = []
+    for cand in candidats:
+        imgs = charger_pdf_en_base64_images(cand)
+        if imgs:
+            break
+    url_pdf = f"/pdf/{quote(nom_pdf)}"
+    if imgs:
+        cards = "".join([
+            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed {couleur}; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
+            for img in imgs
+        ])
+        return f'{cards}<div style="text-align:center; margin-bottom:14px;"><a href="{url_pdf}" target="_blank" rel="noopener" class="pdf-btn" style="border-color:{couleur}; color:{couleur};">📄 Ouvrir / Télécharger {nom_pdf}</a></div>'
+    import json, html as _html
+    cand_urls = [f"/pdf/{quote(c)}" for c in candidats] + [f"./{quote(c)}" for c in candidats] + [f"./pdfs/{quote(c)}" for c in candidats]
+    cand_json = _html.escape(json.dumps(cand_urls), quote=True)
+    safe_label = _html.escape(titre_bloc, quote=True)
+    return f'<div class="pdf-viewer-box" data-pdf-label="{safe_label}" data-accent="{couleur}" data-pdf-candidates="{cand_json}"></div>'
 
 # =============================================================================
 # TEMPLATE DE BASE (DESIGN EXACT, BOUTONS 3D, FOND PASTEL & CAHIER SÉYÈS)
@@ -391,12 +452,110 @@ BASE_TEMPLATE = """
             background-color: #80DEEA;
             border-radius: 8px;
         }
+
+        .pdf-viewer-box { margin-bottom: 16px; border: 2px dashed #4361EE; border-radius: 14px; background: #F8FAFC; padding: 12px; }
+        .pdf-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+        .pdf-title { font-size: 15px; font-weight: 800; color: #1E293B; }
+        .pdf-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+        .pdf-btn { background: #FFFFFF; border: 2px solid #CBD5E1; border-radius: 8px; padding: 6px 10px; font-size: 13px; font-weight: 800; color: #1E293B; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; min-height: 36px; }
+        .pdf-btn:hover { background: #F1F5F9; border-color: #64748B; }
+        .pdf-zoom-label { font-size: 13px; font-weight: 800; color: #475569; min-width: 44px; text-align: center; }
+        .pdf-status { font-size: 13px; font-weight: bold; color: #475569; padding: 8px 4px; text-align: center; }
+        .pdf-pages { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .pdf-page-wrap { width: 100%; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; overflow-x: auto; }
+        .pdf-page-wrap canvas { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 6px; }
+        .pdf-page-num { font-size: 12px; font-weight: bold; color: #64748B; margin-top: 6px; }
+        .pdf-error-box { background: #FFFBEB; border: 2px dashed #F59E0B; border-radius: 10px; padding: 10px 12px; font-size: 13px; color: #92400E; line-height: 1.5; }
     </style>
 </head>
 <body>
     <div class="container">
         {{ contenu|safe }}
     </div>
+
+    <script>
+    (function() {
+      const boxes = document.querySelectorAll(".pdf-viewer-box");
+      if (!boxes.length) return;
+      function loadScriptTag(s) {
+        return new Promise(function(res, rej) {
+          const el = document.createElement("script");
+          el.src = s; el.async = true; el.onload = res; el.onerror = function() { el.remove(); rej(); };
+          document.head.appendChild(el);
+        });
+      }
+      let pPromise = null;
+      function ensurePdfJs() {
+        if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+        if (pPromise) return pPromise;
+        pPromise = (async function() {
+          const srcs = [
+            { l: "/pdf.min.js", w: "/pdf.worker.min.js" },
+            { l: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", w: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js" },
+            { l: "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js", w: "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js" }
+          ];
+          for (const x of srcs) {
+            try { await loadScriptTag(x.l); if (window.pdfjsLib) { window.pdfjsLib.GlobalWorkerOptions.workerSrc = x.w; return window.pdfjsLib; } } catch (e) {}
+          }
+          throw new Error("PDF.js indisponible");
+        })();
+        return pPromise;
+      }
+      function isPdf(buf) {
+        if (!buf || buf.byteLength < 5) return false;
+        const b = new Uint8Array(buf, 0, 5);
+        return b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46 && b[4] === 0x2D;
+      }
+      async function renderPages(doc, el, z) {
+        el.innerHTML = "";
+        const w = Math.max(260, (el.clientWidth || 560) - 20);
+        const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        for (let i = 1; i <= doc.numPages; i++) {
+          const pg = await doc.getPage(i);
+          const vp0 = pg.getViewport({ scale: 1 });
+          const vp = pg.getViewport({ scale: (w / vp0.width) * z });
+          const wrap = document.createElement("div"); wrap.className = "pdf-page-wrap";
+          const cv = document.createElement("canvas");
+          cv.width = Math.floor(vp.width * dpr); cv.height = Math.floor(vp.height * dpr);
+          cv.style.width = Math.floor(vp.width) + "px"; cv.style.height = Math.floor(vp.height) + "px";
+          const ctx = cv.getContext("2d");
+          if (ctx) { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); await pg.render({ canvasContext: ctx, viewport: vp }).promise; }
+          const num = document.createElement("div"); num.className = "pdf-page-num"; num.textContent = "Page " + i + " / " + doc.numPages;
+          wrap.appendChild(cv); wrap.appendChild(num); el.appendChild(wrap);
+        }
+      }
+      boxes.forEach(async function(box) {
+        const label = box.getAttribute("data-pdf-label") || "PDF";
+        const accent = box.getAttribute("data-accent") || "#4361EE";
+        let cands = []; try { cands = JSON.parse(box.getAttribute("data-pdf-candidates") || "[]"); } catch(e) {}
+        box.style.borderColor = accent;
+        box.innerHTML = "<div class=\"pdf-header\"><div class=\"pdf-title\" style=\"color:" + accent + ";\">" + label + "</div><div class=\"pdf-toolbar\"><button type=\"button\" class=\"pdf-btn pdf-zout\">−</button><span class=\"pdf-zoom-label\">100%</span><button type=\"button\" class=\"pdf-btn pdf-zin\">+</button><a class=\"pdf-btn pdf-open\" style=\"display:none;\" target=\"_blank\" rel=\"noopener\">📄 Ouvrir</a></div></div><div class=\"pdf-status\">⏳ Chargement du PDF en cours...</div><div class=\"pdf-pages\"></div>";
+        const st = box.querySelector(".pdf-status"), pgEl = box.querySelector(".pdf-pages"), openL = box.querySelector(".pdf-open"), zLab = box.querySelector(".pdf-zoom-label");
+        let found = null;
+        for (const c of cands) {
+          try { const r = await fetch(encodeURI(c)); if (!r.ok) continue; const buf = await r.arrayBuffer(); if (isPdf(buf)) { found = { url: encodeURI(c), buf }; break; } } catch(e) {}
+        }
+        if (!found) {
+          st.innerHTML = "<div class=\"pdf-error-box\">Document PDF non trouvé à côté du script (Les étapes ci-dessous restent actives).</div>";
+          return;
+        }
+        openL.href = found.url; openL.style.display = "inline-flex";
+        let z = 1.0, doc = null;
+        try {
+          const lib = await ensurePdfJs();
+          try { doc = await lib.getDocument({ data: found.buf.slice(0) }).promise; }
+          catch (e) { doc = await lib.getDocument({ data: found.buf.slice(0), disableWorker: true }).promise; }
+          st.style.display = "none";
+          await renderPages(doc, pgEl, z);
+          box.querySelector(".pdf-zout").addEventListener("click", async function() { if (!doc || z <= 0.6) return; z = Math.round((z - 0.2) * 10) / 10; zLab.textContent = Math.round(z * 100) + "%"; await renderPages(doc, pgEl, z); });
+          box.querySelector(".pdf-zin").addEventListener("click", async function() { if (!doc || z >= 2.2) return; z = Math.round((z + 0.2) * 10) / 10; zLab.textContent = Math.round(z * 100) + "%"; await renderPages(doc, pgEl, z); });
+        } catch (e) {
+          st.innerHTML = "<div class=\"pdf-error-box\">Affichage direct du PDF ci-dessous :</div>";
+          const o = document.createElement("object"); o.data = found.url; o.type = "application/pdf"; o.style.width = "100%"; o.style.height = "480px"; pgEl.appendChild(o);
+        }
+      });
+    })();
+    </script>
 </body>
 </html>
 """
@@ -593,7 +752,7 @@ def page_dessin():
 
 @app.route("/dessin/carotte")
 def page_dessin_carotte():
-    pdf_imgs = charger_pdf_en_base64_images("carot.pdf")
+    bloc_carotte_pdf = rendre_bloc_pdf("carot.pdf", "🥕 Modèle PDF : carot.pdf", "#EA580C", ["carot.pdf", "Carot.pdf"])
     html = f"""
         <div style="text-align:center; margin-bottom:12px;">
             <span class="badge-date" style="background:#EA580C;">🥕 Atelier Dessin : Comment dessiner une Carotte</span>
@@ -602,7 +761,7 @@ def page_dessin_carotte():
         <div class="dessin-wrapper">
             <div class="ruban-cote"><span>✏️</span><span>⭐</span><span>🎨</span><span>🥕</span><span>✨</span></div>
             <div class="dessin-contenu">
-                {''.join([f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #FB923C; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>' for img in pdf_imgs]) if pdf_imgs else '<p style="background:#FFF7ED; border:2px dashed #F97316; border-radius:10px; padding:10px; font-size:13px; color:#9A3412;">Document carot.pdf non détecté à côté du script (Les étapes illustrées ci-dessous restent actives).</p>'}
+                {bloc_carotte_pdf}
                 
                 <div style="background:#FFFAF0; border:2px solid #FDBA74; border-radius:12px; padding:14px; margin-top:12px;">
                     <p style="font-size:18px; font-weight:900; color:#EA580C; text-align:center; margin-bottom:10px;">✨ Les Étapes pour réussir la Carotte ✨</p>
@@ -631,7 +790,7 @@ def page_dessin_carotte():
 
 @app.route("/dessin/cartable")
 def page_dessin_cartable():
-    pdf_imgs = charger_pdf_en_base64_images("school bag.pdf")
+    bloc_cartable_pdf = rendre_bloc_pdf("school bag.pdf", "🎒 Modèle PDF : school bag.pdf", "#FF2E93", ["school bag.pdf", "school_bag.pdf", "School bag.pdf"])
     html = f"""
         <div style="text-align:center; margin-bottom:12px;">
             <span class="badge-date" style="background:#FF2E93;">🎒 Atelier Dessin : Comment dessiner un Cartable Mignon</span>
@@ -640,7 +799,7 @@ def page_dessin_cartable():
         <div class="dessin-wrapper">
             <div class="ruban-cote"><span>🎒</span><span>⭐</span><span>🎨</span><span>🖍️</span><span>✨</span></div>
             <div class="dessin-contenu" style="border-color:#FF2E93;">
-                {''.join([f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #F472B6; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>' for img in pdf_imgs]) if pdf_imgs else '<p style="background:#FDF2F8; border:2px dashed #F472B6; border-radius:10px; padding:10px; font-size:13px; color:#9D174D;">Document school bag.pdf non détecté à côté du script (Le tutoriel complet étape par étape ci-dessous reste actif).</p>'}
+                {bloc_cartable_pdf}
 
                 <div style="background:#FFF5F7; border:2px solid #F472B6; border-radius:14px; padding:14px;">
                     <p style="font-size:18px; font-weight:900; color:#DB2777; text-align:center; margin-bottom:4px;">
@@ -688,26 +847,8 @@ def page_dessin_cartable():
 
 @app.route("/dessin/fille")
 def page_dessin_fille():
-    pdf_etapes = charger_pdf_en_base64_images("Etape d'une fille.pdf") or charger_pdf_en_base64_images("Etape_d_une_fille.pdf")
-    pdf_fille = charger_pdf_en_base64_images("Fille.pdf")
-
-    bloc_etapes_pdf = (
-        "".join([
-            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #A855F7; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
-            for img in pdf_etapes
-        ])
-        if pdf_etapes
-        else '<p style="background:#FAF5FF; border:2px dashed #A855F7; border-radius:10px; padding:10px; font-size:13px; color:#6B21A8; margin-bottom:10px;">Document Etape d\'une fille.pdf non détecté à côté du script (Les 6 étapes ci-dessous restent actives).</p>'
-    )
-
-    bloc_fille_pdf = (
-        "".join([
-            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #EC4899; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
-            for img in pdf_fille
-        ])
-        if pdf_fille
-        else '<p style="background:#FDF2F8; border:2px dashed #EC4899; border-radius:10px; padding:10px; font-size:13px; color:#9D174D; margin-bottom:12px;">Document Fille.pdf non détecté à côté du script (Placez Fille.pdf à côté du script).</p>'
-    )
+    bloc_etapes_pdf = rendre_bloc_pdf("Etape d'une fille.pdf", "📘 Étapes : Etape d'une fille.pdf", "#9333EA", ["Etape d'une fille.pdf", "Etape_d_une_fille.pdf", "etape d'une fille.pdf"])
+    bloc_fille_pdf = rendre_bloc_pdf("Fille.pdf", "🖍️ Dessin : Fille.pdf", "#DB2777", ["Fille.pdf", "fille.pdf"])
 
     html = f"""
         <div style="text-align:center; margin-bottom:12px;">
@@ -769,26 +910,8 @@ def page_dessin_fille():
 
 @app.route("/dessin/crayon")
 def page_dessin_crayon():
-    pdf_etapes = charger_pdf_en_base64_images("crayon.pdf") or charger_pdf_en_base64_images("Crayon.pdf")
-    pdf_crayon = charger_pdf_en_base64_images("crayon1.pdf") or charger_pdf_en_base64_images("Crayon1.pdf")
-
-    bloc_etapes_pdf = (
-        "".join([
-            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #0284C7; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
-            for img in pdf_etapes
-        ])
-        if pdf_etapes
-        else '<p style="background:#F0F9FF; border:2px dashed #0284C7; border-radius:10px; padding:10px; font-size:13px; color:#0369A1; margin-bottom:10px;">Document crayon.pdf non détecté à côté du script (Les 6 étapes ci-dessous restent actives).</p>'
-    )
-
-    bloc_crayon_pdf = (
-        "".join([
-            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #F59E0B; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
-            for img in pdf_crayon
-        ])
-        if pdf_crayon
-        else '<p style="background:#FFFBEB; border:2px dashed #F59E0B; border-radius:10px; padding:10px; font-size:13px; color:#B45309; margin-bottom:12px;">Document crayon1.pdf non détecté à côté du script (Placez crayon1.pdf à côté du script).</p>'
-    )
+    bloc_etapes_pdf = rendre_bloc_pdf("crayon.pdf", "📘 Étapes : crayon.pdf", "#0284C7", ["crayon.pdf", "Crayon.pdf"])
+    bloc_crayon_pdf = rendre_bloc_pdf("crayon1.pdf", "🖍️ Dessin : crayon1.pdf", "#D97706", ["crayon1.pdf", "Crayon1.pdf"])
 
     html = f"""
         <div style="text-align:center; margin-bottom:12px;">
@@ -850,26 +973,8 @@ def page_dessin_crayon():
 
 @app.route("/dessin/princesse")
 def page_dessin_princesse():
-    pdf_etapes = charger_pdf_en_base64_images("princesse.pdf") or charger_pdf_en_base64_images("Princesse.pdf")
-    pdf_princesse = charger_pdf_en_base64_images("princesse1.pdf") or charger_pdf_en_base64_images("Princesse1.pdf")
-
-    bloc_etapes_pdf = (
-        "".join([
-            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #EC4899; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
-            for img in pdf_etapes
-        ])
-        if pdf_etapes
-        else '<p style="background:#FDF2F8; border:2px dashed #EC4899; border-radius:10px; padding:10px; font-size:13px; color:#9D174D; margin-bottom:10px;">Document princesse.pdf non détecté à côté du script (Les étapes ci-dessous restent actives).</p>'
-    )
-
-    bloc_princesse_pdf = (
-        "".join([
-            f'<div style="text-align:center; margin-bottom:15px; border:2px dashed #A855F7; border-radius:12px; padding:8px;"><img src="data:image/png;base64,{img}" style="max-width:100%; border-radius:8px;"></div>'
-            for img in pdf_princesse
-        ])
-        if pdf_princesse
-        else '<p style="background:#FAF5FF; border:2px dashed #A855F7; border-radius:10px; padding:10px; font-size:13px; color:#6B21A8; margin-bottom:12px;">Document princesse1.pdf non détecté à côté du script (Placez princesse1.pdf à côté du script).</p>'
-    )
+    bloc_etapes_pdf = rendre_bloc_pdf("princesse.pdf", "📘 Étapes : princesse.pdf", "#EC4899", ["princesse.pdf", "Princesse.pdf"])
+    bloc_princesse_pdf = rendre_bloc_pdf("princesse1.pdf", "🖍️ Dessin : princesse1.pdf", "#7E22CE", ["princesse1.pdf", "Princesse1.pdf"])
 
     html = f"""
         <div style="text-align:center; margin-bottom:12px;">
