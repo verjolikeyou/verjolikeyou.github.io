@@ -558,9 +558,9 @@ def page_dessin():
 
             <button type="button" class="btn-rose btn-option" data-url="/dessin/carotte" data-titre="1- Carotte">1- Carotte</button>
             <button type="button" class="btn-rose btn-option" data-url="/dessin/cartable" data-titre="2- Cartable">2- Cartable</button>
-            <button type="button" class="btn-rose btn-option" data-url="/dessin/fille" data-titre="3-Fille">3-Fille</button>
-            <button type="button" class="btn-rose btn-option" data-url="/dessin/crayon" data-titre="4-Crayon">4-Crayon</button>
-            <button type="button" class="btn-rose btn-option" data-url="/dessin/princesse" data-titre="5-Princesse">5-Princesse</button>
+            <button type="button" class="btn-rose btn-option" data-url="/dessin/fille" data-titre="Fille">Fille</button>
+            <button type="button" class="btn-rose btn-option" data-url="/dessin/crayon" data-titre="Crayon">Crayon</button>
+            <button type="button" class="btn-rose btn-option" data-url="/dessin/princesse" data-titre="Princesse">Princesse</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/" class="btn-retour">← Revenir au choix</a>
