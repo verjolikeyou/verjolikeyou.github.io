@@ -2,7 +2,7 @@
 // Compatible GitHub Pages (sous-dossier ou racine) et PWABuilder Android APK
 // Inclut : Cache Hors-Ligne + Notifications Push + Rappels Horaires Hors-Ligne (toutes les 1h) + Notification Instantanée à l'installation
 
-const CACHE_NAME = 'prog-11eme-offline-v3';
+const CACHE_NAME = 'prog-11eme-offline-v4';
 const NOTIF_DB_NAME = 'verjo-eleven-notif-db';
 const NOTIF_STORE_NAME = 'state';
 const ONE_HOUR_MS = 60 * 60 * 1000;
@@ -19,6 +19,112 @@ const CORE_ASSETS = [
   './pwa-maskable-512x512.png',
   './apple-touch-icon.png'
 ];
+
+// Tous les 8 PDF du programme (chemins relatifs ./, ./pdfs/, ./pdf/)
+const PDF_ASSETS = [
+  "./carot.pdf",
+  "./pdfs/carot.pdf",
+  "./pdf/carot.pdf",
+  "./Carot.pdf",
+  "./pdfs/Carot.pdf",
+  "./pdf/Carot.pdf",
+  "./school%20bag.pdf",
+  "./pdfs/school%20bag.pdf",
+  "./pdf/school%20bag.pdf",
+  "./school_bag.pdf",
+  "./pdfs/school_bag.pdf",
+  "./pdf/school_bag.pdf",
+  "./School%20bag.pdf",
+  "./pdfs/School%20bag.pdf",
+  "./pdf/School%20bag.pdf",
+  "./Etape%20d%27une%20fille.pdf",
+  "./pdfs/Etape%20d%27une%20fille.pdf",
+  "./pdf/Etape%20d%27une%20fille.pdf",
+  "./Etape_d_une_fille.pdf",
+  "./pdfs/Etape_d_une_fille.pdf",
+  "./pdf/Etape_d_une_fille.pdf",
+  "./etape%20d%27une%20fille.pdf",
+  "./pdfs/etape%20d%27une%20fille.pdf",
+  "./pdf/etape%20d%27une%20fille.pdf",
+  "./Fille.pdf",
+  "./pdfs/Fille.pdf",
+  "./pdf/Fille.pdf",
+  "./fille.pdf",
+  "./pdfs/fille.pdf",
+  "./pdf/fille.pdf",
+  "./crayon.pdf",
+  "./pdfs/crayon.pdf",
+  "./pdf/crayon.pdf",
+  "./Crayon.pdf",
+  "./pdfs/Crayon.pdf",
+  "./pdf/Crayon.pdf",
+  "./crayon1.pdf",
+  "./pdfs/crayon1.pdf",
+  "./pdf/crayon1.pdf",
+  "./Crayon1.pdf",
+  "./pdfs/Crayon1.pdf",
+  "./pdf/Crayon1.pdf",
+  "./princesse.pdf",
+  "./pdfs/princesse.pdf",
+  "./pdf/princesse.pdf",
+  "./Princesse.pdf",
+  "./pdfs/Princesse.pdf",
+  "./pdf/Princesse.pdf",
+  "./princesse1.pdf",
+  "./pdfs/princesse1.pdf",
+  "./pdf/princesse1.pdf",
+  "./Princesse1.pdf",
+  "./pdfs/Princesse1.pdf",
+  "./pdf/Princesse1.pdf"
+];
+
+// Librairie PDF.js locale + CDN pour rendu canvas 100% hors-ligne dans l'APK
+const PDFJS_ASSETS = [
+  "./pdf.min.js",
+  "./pdf.worker.min.js",
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js",
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"
+];
+
+const TRUSTED_CDN_ORIGINS = new Set([
+  'https://cdnjs.cloudflare.com',
+  'https://cdn.jsdelivr.net'
+]);
+
+async function isValidPdfResponse(res) {
+  if (!res || !res.ok) return false;
+  try {
+    const buf = await res.clone().arrayBuffer();
+    if (!buf || buf.byteLength < 5) return false;
+    const b = new Uint8Array(buf, 0, Math.min(buf.byteLength, 16));
+    for (let i = 0; i <= b.length - 5; i++) {
+      if (b[i] === 0x25 && b[i + 1] === 0x50 && b[i + 2] === 0x44 && b[i + 3] === 0x46 && b[i + 4] === 0x2D) {
+        return true;
+      }
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+async function cacheAssetSafely(cache, url) {
+  try {
+    const res = await fetch(new Request(url, { cache: 'reload' }));
+    if (!res || !res.ok) return;
+    if (url.toLowerCase().endsWith('.pdf')) {
+      if (await isValidPdfResponse(res)) {
+        await cache.put(url, res);
+      }
+      return;
+    }
+    await cache.put(url, res);
+  } catch {
+    // Ignore unavailable candidate path silently
+  }
+}
 
 // Messages différents qui tournent à chaque notification pour rappeler de regarder VerjoOnlyElevenProgram
 const DAILY_REMINDERS = [
@@ -278,10 +384,9 @@ async function scheduleUpcomingOfflineTriggers() {
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      const allUrls = [...CORE_ASSETS, ...PDF_ASSETS, ...PDFJS_ASSETS];
       return Promise.allSettled(
-        CORE_ASSETS.map((url) =>
-          cache.add(new Request(url, { cache: 'reload' })).catch(() => null)
-        )
+        allUrls.map((url) => cacheAssetSafely(cache, url))
       );
     }).then(() => setNotifState('swInstalledAt', Date.now()))
   );
@@ -420,19 +525,19 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Interception des requêtes : Cache-First 100% hors-ligne, zéro lien externe
+// Interception des requêtes : Cache-First 100% hors-ligne (PDF + PDF.js CDN + Assets locaux)
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
+  const isSameOrigin = url.origin === self.location.origin;
+  const isTrustedCdn = TRUSTED_CDN_ORIGINS.has(url.origin);
 
-  // Ne jamais mettre en cache ou rediriger vers des liens externes
-  if (url.origin !== self.location.origin) {
+  if (!isSameOrigin && !isTrustedCdn) {
     return;
   }
 
-  // Pour les navigations (changement de page), toujours servir index.html hors-ligne
-  if (event.request.mode === 'navigate') {
+  if (isSameOrigin && event.request.mode === 'navigate') {
     event.waitUntil(
       checkAndSendHourlyReminder().then(() => scheduleUpcomingOfflineTriggers())
     );
@@ -455,23 +560,32 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stratégie Cache-First pour tous les assets locaux (JS, CSS, icônes, JSON)
+  const isPdfRequest = url.pathname.toLowerCase().endsWith('.pdf');
+  const isScriptRequest = url.pathname.toLowerCase().endsWith('.js') || url.pathname.toLowerCase().endsWith('.mjs');
+
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
 
-      return fetch(event.request).then((networkResponse) => {
+      return fetch(event.request).then(async (networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+          if (isPdfRequest) {
+            if (await isValidPdfResponse(networkResponse)) {
+              const copy = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+            }
+          } else {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
         }
         return networkResponse;
       }).catch(() => {
-        // Repli de sécurité si hors-ligne et ressource absente
+        if (isPdfRequest || isScriptRequest || isTrustedCdn) {
+          return new Response('', { status: 503, statusText: 'Offline Resource Unavailable' });
+        }
         return caches.match('./index.html');
       });
     })
