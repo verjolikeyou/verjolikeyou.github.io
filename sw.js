@@ -2,7 +2,7 @@
 // Compatible GitHub Pages (sous-dossier ou racine) et PWABuilder Android APK
 // Inclut : Cache Hors-Ligne + Notifications Push + Rappels Horaires Hors-Ligne (toutes les 1h) + Notification Instantanée à l'installation
 
-const CACHE_NAME = 'prog-11eme-offline-v4';
+const CACHE_NAME = 'prog-11eme-offline-v5';
 const NOTIF_DB_NAME = 'verjo-eleven-notif-db';
 const NOTIF_STORE_NAME = 'state';
 const ONE_HOUR_MS = 60 * 60 * 1000;
