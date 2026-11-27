@@ -98,7 +98,11 @@ def rendre_bloc_pdf(nom_pdf, titre_bloc, couleur, candidats):
         ])
         return f'{cards}<div style="text-align:center; margin-bottom:14px;"><a href="{url_pdf}" target="_blank" rel="noopener" class="pdf-btn" style="border-color:{couleur}; color:{couleur};">📄 Ouvrir / Télécharger {nom_pdf}</a></div>'
     import json, html as _html
-    cand_urls = [f"/pdf/{quote(c)}" for c in candidats] + [f"./{quote(c)}" for c in candidats] + [f"./pdfs/{quote(c)}" for c in candidats]
+    cand_urls = []
+    for c in candidats:
+        for p in (f"/pdf/{c}", f"./pdfs/{c}", f"./pdf/{c}", f"./{c}", f"/pdfs/{c}"):
+            if p not in cand_urls:
+                cand_urls.append(p)
     cand_json = _html.escape(json.dumps(cand_urls), quote=True)
     safe_label = _html.escape(titre_bloc, quote=True)
     return f'<div class="pdf-viewer-box" data-pdf-label="{safe_label}" data-accent="{couleur}" data-pdf-candidates="{cand_json}"></div>'
@@ -477,6 +481,13 @@ BASE_TEMPLATE = """
     (function() {
       const boxes = document.querySelectorAll(".pdf-viewer-box");
       if (!boxes.length) return;
+      function encodeCandidateUrl(rawPath) {
+        let base = rawPath;
+        try { base = decodeURIComponent(rawPath); } catch (e) {
+          try { base = decodeURI(rawPath); } catch (e2) { base = rawPath; }
+        }
+        return encodeURI(base).replace(/'/g, "%27");
+      }
       function loadScriptTag(s) {
         return new Promise(function(res, rej) {
           const el = document.createElement("script");
@@ -490,6 +501,7 @@ BASE_TEMPLATE = """
         if (pPromise) return pPromise;
         pPromise = (async function() {
           const srcs = [
+            { l: "./pdf.min.js", w: "./pdf.worker.min.js" },
             { l: "/pdf.min.js", w: "/pdf.worker.min.js" },
             { l: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", w: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js" },
             { l: "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js", w: "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js" }
@@ -497,18 +509,22 @@ BASE_TEMPLATE = """
           for (const x of srcs) {
             try { await loadScriptTag(x.l); if (window.pdfjsLib) { window.pdfjsLib.GlobalWorkerOptions.workerSrc = x.w; return window.pdfjsLib; } } catch (e) {}
           }
+          pPromise = null;
           throw new Error("PDF.js indisponible");
         })();
         return pPromise;
       }
       function isPdf(buf) {
         if (!buf || buf.byteLength < 5) return false;
-        const b = new Uint8Array(buf, 0, 5);
-        return b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46 && b[4] === 0x2D;
+        const b = new Uint8Array(buf, 0, Math.min(buf.byteLength, 16));
+        for (let i = 0; i <= b.length - 5; i++) {
+          if (b[i] === 0x25 && b[i + 1] === 0x50 && b[i + 2] === 0x44 && b[i + 3] === 0x46 && b[i + 4] === 0x2D) return true;
+        }
+        return false;
       }
       async function renderPages(doc, el, z) {
         el.innerHTML = "";
-        const w = Math.max(260, (el.clientWidth || 560) - 20);
+        const w = Math.max(240, (el.clientWidth || 560) - 20);
         const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
         for (let i = 1; i <= doc.numPages; i++) {
           const pg = await doc.getPage(i);
@@ -533,7 +549,8 @@ BASE_TEMPLATE = """
         const st = box.querySelector(".pdf-status"), pgEl = box.querySelector(".pdf-pages"), openL = box.querySelector(".pdf-open"), zLab = box.querySelector(".pdf-zoom-label");
         let found = null;
         for (const c of cands) {
-          try { const r = await fetch(encodeURI(c)); if (!r.ok) continue; const buf = await r.arrayBuffer(); if (isPdf(buf)) { found = { url: encodeURI(c), buf }; break; } } catch(e) {}
+          const safeUrl = encodeCandidateUrl(c);
+          try { const r = await fetch(safeUrl); if (!r.ok) continue; const buf = await r.arrayBuffer(); if (isPdf(buf)) { found = { url: safeUrl, buf }; break; } } catch(e) {}
         }
         if (!found) {
           st.innerHTML = "<div class=\"pdf-error-box\">Document PDF non trouvé à côté du script (Les étapes ci-dessous restent actives).</div>";
@@ -543,15 +560,18 @@ BASE_TEMPLATE = """
         let z = 1.0, doc = null;
         try {
           const lib = await ensurePdfJs();
-          try { doc = await lib.getDocument({ data: found.buf.slice(0) }).promise; }
-          catch (e) { doc = await lib.getDocument({ data: found.buf.slice(0), disableWorker: true }).promise; }
+          try {
+            doc = await lib.getDocument({ data: found.buf.slice(0) }).promise;
+            await renderPages(doc, pgEl, z);
+          } catch (e) {
+            doc = await lib.getDocument({ data: found.buf.slice(0), disableWorker: true }).promise;
+            await renderPages(doc, pgEl, z);
+          }
           st.style.display = "none";
-          await renderPages(doc, pgEl, z);
           box.querySelector(".pdf-zout").addEventListener("click", async function() { if (!doc || z <= 0.6) return; z = Math.round((z - 0.2) * 10) / 10; zLab.textContent = Math.round(z * 100) + "%"; await renderPages(doc, pgEl, z); });
           box.querySelector(".pdf-zin").addEventListener("click", async function() { if (!doc || z >= 2.2) return; z = Math.round((z + 0.2) * 10) / 10; zLab.textContent = Math.round(z * 100) + "%"; await renderPages(doc, pgEl, z); });
         } catch (e) {
-          st.innerHTML = "<div class=\"pdf-error-box\">Affichage direct du PDF ci-dessous :</div>";
-          const o = document.createElement("object"); o.data = found.url; o.type = "application/pdf"; o.style.width = "100%"; o.style.height = "480px"; pgEl.appendChild(o);
+          st.innerHTML = "<div class=\"pdf-error-box\">Rendu canvas indisponible : utilisez le bouton <b>📄 Ouvrir</b> ci-dessus.</div>";
         }
       });
     })();
