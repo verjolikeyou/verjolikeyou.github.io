@@ -712,13 +712,385 @@ def page_programme():
 @app.route("/anglais")
 def page_anglais():
     html = """
-        <h1 class="titre-principal">Anglais — 11ème</h1>
-        <div class="cadre-contenu" style="text-align:center;">
-            <p style="font-size:18px; font-weight:bold; color:#0D47A1;">🇬🇧 Welcome to English Class!</p>
-            <p style="margin-top:10px;">Les notions et activités d'anglais seront chargées selon les séquences prévues.</p>
-        </div>
-        <div style="text-align:center;">
+        <div class="cadre-menu">
+            <h1 class="titre-principal" id="titre-anglais">
+                Anglais — 11ème<br>
+                <span class="sous-titre-selection" id="sous-titre-anglais">Choisissez une leçon</span>
+            </h1>
+
+            <button type="button" class="btn-rose btn-option" data-url="/anglais/greeting-1" data-titre="Greeting page 1">Greeting page 1</button>
+            <button type="button" class="btn-rose btn-option" data-url="/anglais/greeting-2" data-titre="Greeting page 2">Greeting page 2</button>
+            <button type="button" class="btn-rose btn-option" data-url="/anglais/greeting-3" data-titre="Greeting page 3">Greeting page 3</button>
+
+            <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/" class="btn-retour">← Revenir au choix</a>
+        </div>
+
+        <script>
+            let urlChoisie = "/anglais/greeting-1";
+            const boutons = document.querySelectorAll('.btn-option');
+            const sousTitre = document.getElementById('sous-titre-anglais');
+            const btnValider = document.getElementById('btn-valider');
+
+            boutons[0].classList.add('selected');
+            sousTitre.textContent = boutons[0].getAttribute('data-titre');
+
+            boutons.forEach(b => {
+                b.addEventListener('click', () => {
+                    boutons.forEach(x => x.classList.remove('selected'));
+                    b.classList.add('selected');
+                    urlChoisie = b.getAttribute('data-url');
+                    sousTitre.textContent = b.getAttribute('data-titre');
+                });
+            });
+
+            btnValider.addEventListener('click', () => {
+                window.location.href = urlChoisie;
+            });
+        </script>
+    """
+    return afficher(html)
+
+@app.route("/anglais/greeting-1")
+def page_anglais_greeting_1():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Thursday 01st October 2026</span>
+            <div class="titre-lecon">🇬🇧 Greeting <span style="font-size:15px; color:#475569; font-weight:bold;">[grit ɪŋ]</span></div>
+        </div>
+
+        <div class="cadre-contenu" style="background:#FFFFFF;">
+            <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between;">
+                <div style="flex:1; min-width:240px;">
+                    <p style="font-size:16px; font-weight:800; color:#0284C7; text-decoration:underline; margin-bottom:6px;">Dialogue :</p>
+                    <p style="font-weight:800; color:#DB2777; text-decoration:underline; margin-bottom:4px;">Le matin</p>
+                    <div style="font-size:14px; line-height:1.75; margin-bottom:10px;">
+                        <b style="color:#64748B;">The teacher :</b> Good morning everybody<br>
+                        <b style="color:#64748B;">The class :</b> Good morning <b style="color:#0284C7;">teacher</b><br>
+                        <b style="color:#64748B;">The teacher :</b> How are you?<br>
+                        <b style="color:#64748B;">The class :</b> I am very well, thank you
+                    </div>
+
+                    <p style="font-weight:800; color:#DB2777; text-decoration:underline; margin-bottom:4px;">A la sortie</p>
+                    <div style="font-size:14px; line-height:1.75; margin-bottom:10px;">
+                        <b style="color:#64748B;">The teacher :</b> good bye everybody<br>
+                        <b style="color:#64748B;">The class :</b> good bye <b style="color:#0284C7;">teacher</b>
+                    </div>
+
+                    <p style="font-weight:800; color:#DB2777; text-decoration:underline; margin-bottom:4px;">L'après midi</p>
+                    <div style="font-size:14px; line-height:1.75;">
+                        <b style="color:#64748B;">The teacher :</b> Good afternoon everybody<br>
+                        <b style="color:#64748B;">The class :</b> Good afternoon <b style="color:#0284C7;">teacher</b>
+                    </div>
+                </div>
+
+                <div style="flex:0 0 220px; margin:0 auto; text-align:center; background:#F8FAFC; border:2px solid #CBD5E1; border-radius:14px; padding:10px;">
+                    <svg viewBox="0 0 230 165" style="width:100%; max-width:220px; display:block; margin:auto;">
+                        <rect x="8" y="8" width="214" height="148" rx="10" fill="#FFFBEB" stroke="#CBD5E1" stroke-width="2"/>
+                        <rect x="22" y="66" width="52" height="22" rx="3" fill="#D97706" stroke="#92400E" stroke-width="1.5"/>
+                        <circle cx="38" cy="54" r="10" fill="#FDE68A" stroke="#92400E" stroke-width="1.5"/>
+                        <path d="M28,50 Q38,40 48,50" fill="#F472B6" stroke="#9D174D" stroke-width="1.5"/>
+                        <rect x="64" y="48" width="52" height="22" rx="3" fill="#D97706" stroke="#92400E" stroke-width="1.5"/>
+                        <circle cx="80" cy="36" r="10" fill="#FDE68A" stroke="#92400E" stroke-width="1.5"/>
+                        <path d="M71,32 Q80,22 89,32" fill="#FACC15" stroke="#CA8A04" stroke-width="1.5"/>
+                        <rect x="104" y="34" width="50" height="22" rx="3" fill="#D97706" stroke="#92400E" stroke-width="1.5"/>
+                        <circle cx="120" cy="24" r="10" fill="#FDE68A" stroke="#92400E" stroke-width="1.5"/>
+                        <path d="M111,20 Q120,10 129,20" fill="#EF4444" stroke="#B91C1C" stroke-width="1.5"/>
+                        <circle cx="182" cy="52" r="13" fill="#FDE68A" stroke="#78350F" stroke-width="1.5"/>
+                        <path d="M178,39 Q198,40 198,74 Q190,74 188,58 Z" fill="#1E293B"/>
+                        <path d="M168,66 L192,66 L202,126 L160,126 Z" fill="#7DD3FC" stroke="#0284C7" stroke-width="2"/>
+                        <line x1="168" y1="74" x2="144" y2="86" stroke="#FDE68A" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="160" y1="108" x2="128" y2="132" stroke="#334155" stroke-width="1.8"/>
+                        <polygon points="160,108 153,110 156,115" fill="#334155"/>
+                        <text x="118" y="148" font-size="13" font-weight="bold" fill="#0284C7" text-anchor="middle">teacher</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="cadre-contenu" style="background:#F8FAFC;">
+            <p style="font-size:16px; font-weight:800; color:#15803D; text-decoration:underline; margin-bottom:6px;">Expressions</p>
+            <p style="font-size:14px; font-weight:bold; color:#475569; margin-bottom:8px;">Comment dire bonjour en Anglais?</p>
+            <div style="font-size:15px; line-height:2;">
+                ✦ <b style="color:#DB2777;">Le matin</b> &nbsp;➔&nbsp; <b>good morning</b><br>
+                ✦ <b style="color:#DB2777;">L'après midi</b> &nbsp;➔&nbsp; <b>good afternoon</b><br>
+                ✦ <b style="color:#DB2777;">Pour dire au revoir</b> &nbsp;➔&nbsp; <b>good bye</b><br>
+                ✦ What color is the sun? &nbsp;➔&nbsp; <b style="color:#CA8A04;">The sun is yellow</b><br>
+                ✦ What color is the moon? &nbsp;➔&nbsp; <b style="color:#CA8A04;">The moon is yellow</b>
+            </div>
+        </div>
+
+        <div class="cadre-contenu" style="background:#FFFBEB;">
+            <p style="font-size:16px; font-weight:800; color:#15803D; text-decoration:underline; margin-bottom:4px;">Vocabularies</p>
+            <p style="font-size:15px; font-weight:bold; color:#1E293B; margin-bottom:10px;">What is this?</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; text-align:center;">
+                <div style="background:#FFFFFF; border:2px solid #FDE047; border-radius:14px; padding:12px;">
+                    <svg viewBox="0 0 110 110" style="width:92px; height:92px; margin:auto; display:block;">
+                        <polygon points="55,6 62,24 48,24" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="55,104 62,86 48,86" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="6,55 24,48 24,62" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="104,55 86,48 86,62" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="20,20 38,26 26,38" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="90,20 72,26 84,38" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="20,90 38,84 26,72" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="90,90 72,84 84,72" fill="#FACC15" stroke="#64748B" stroke-width="1.2"/>
+                        <circle cx="55" cy="55" r="24" fill="#FACC15" stroke="#475569" stroke-width="2"/>
+                    </svg>
+                    <p style="font-size:15px; font-weight:bold; color:#1E293B; margin-top:6px;">This is <u style="color:#DB2777;">the sun</u></p>
+                    <p style="font-size:13px; color:#64748B; font-style:italic;">[sun]</p>
+                </div>
+                <div style="background:#FFFFFF; border:2px solid #FDE047; border-radius:14px; padding:12px;">
+                    <svg viewBox="0 0 110 110" style="width:92px; height:92px; margin:auto; display:block;">
+                        <path d="M68,20 A34,34 0 1,0 68,90 A24,30 0 1,1 68,20 Z" fill="#FACC15" stroke="#475569" stroke-width="2"/>
+                    </svg>
+                    <p style="font-size:15px; font-weight:bold; color:#1E293B; margin-top:6px;">this is <u style="color:#DB2777;">the moon</u></p>
+                    <p style="font-size:13px; color:#64748B; font-style:italic;">[moon]</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/anglais" class="btn-retour">← Revenir au menu Anglais</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/anglais/greeting-2")
+def page_anglais_greeting_2():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Friday 09th October 2026</span>
+            <div class="titre-lecon">✏️ English Exercises — Greeting page 2</div>
+        </div>
+
+        <div class="cadre-contenu" style="background:#FFFFFF;">
+            <p style="font-size:16px; font-weight:800; color:#0D47A1; margin-bottom:4px;">1) <u>Relie avec la bonne réponse</u></p>
+            <p style="font-size:14px; font-weight:bold; color:#475569; margin-bottom:10px;">Comment dire bonjour et au revoir en Anglais?</p>
+
+            <div style="background:#F8FAFC; border:2px solid #80DEEA; border-radius:14px; padding:12px; margin-bottom:16px; text-align:center; overflow-x:auto;">
+                <svg viewBox="0 0 420 185" style="width:100%; max-width:420px; margin:auto; display:block;">
+                    <defs>
+                        <marker id="arrow-eng" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#475569"/>
+                        </marker>
+                    </defs>
+                    <text x="12" y="36" font-size="14" font-weight="bold" fill="#DB2777">Bonjour l'après midi</text>
+                    <circle cx="162" cy="31" r="6" fill="#22C55E"/>
+                    <text x="12" y="96" font-size="14" font-weight="bold" fill="#475569">Bonjour le matin</text>
+                    <circle cx="162" cy="91" r="6" fill="#64748B"/>
+                    <text x="12" y="156" font-size="14" font-weight="bold" fill="#475569">Au revoir</text>
+                    <circle cx="162" cy="151" r="6" fill="#EF4444"/>
+
+                    <ellipse cx="322" cy="31" rx="78" ry="20" fill="#93C5FD" stroke="#60A5FA" stroke-width="2"/>
+                    <text x="322" y="36" font-size="14" font-weight="bold" fill="#1E3A8A" text-anchor="middle">Good morning</text>
+
+                    <ellipse cx="332" cy="91" rx="74" ry="20" fill="#93C5FD" stroke="#60A5FA" stroke-width="2"/>
+                    <text x="332" y="96" font-size="14" font-weight="bold" fill="#1E3A8A" text-anchor="middle">Good bye</text>
+
+                    <ellipse cx="322" cy="151" rx="78" ry="20" fill="#93C5FD" stroke="#60A5FA" stroke-width="2"/>
+                    <text x="322" y="156" font-size="14" font-weight="bold" fill="#1E3A8A" text-anchor="middle">Good afternoon</text>
+
+                    <line x1="168" y1="35" x2="246" y2="144" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow-eng)"/>
+                    <line x1="168" y1="88" x2="244" y2="35" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow-eng)"/>
+                    <line x1="168" y1="148" x2="256" y2="95" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow-eng)"/>
+                </svg>
+            </div>
+
+            <p style="font-size:16px; font-weight:800; color:#0D47A1; margin-bottom:10px;">2) <u>Entoure <span style="color:#DB2777;">the moon</span> et barre <span style="color:#EA580C;">the sun</span></u></p>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; background:#FFFDF7; border:2px solid #FDE68A; border-radius:14px; padding:14px; text-align:center;">
+                <div>
+                    <svg viewBox="0 0 100 100" style="width:82px; height:82px; margin:auto; display:block;">
+                        <circle cx="50" cy="50" r="20" fill="#FACC15" stroke="#64748B" stroke-width="2"/>
+                        <polygon points="50,10 55,24 45,24" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="50,90 55,76 45,76" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="10,50 24,45 24,55" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="90,50 76,45 76,55" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <line x1="16" y1="84" x2="84" y2="16" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                    <span style="font-size:12px; font-weight:bold; color:#DC2626;">✗ sun barré</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 100 100" style="width:82px; height:82px; margin:auto; display:block;">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#16A34A" stroke-width="3.5"/>
+                        <path d="M58,22 A24,24 0 1,0 58,78 A18,22 0 1,1 58,22 Z" fill="#FACC15" stroke="#64748B" stroke-width="2"/>
+                    </svg>
+                    <span style="font-size:12px; font-weight:bold; color:#16A34A;">✓ moon entourée</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 100 100" style="width:82px; height:82px; margin:auto; display:block;">
+                        <circle cx="50" cy="50" r="20" fill="#FACC15" stroke="#64748B" stroke-width="2"/>
+                        <polygon points="50,10 55,24 45,24" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="50,90 55,76 45,76" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="10,50 24,45 24,55" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="90,50 76,45 76,55" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <line x1="16" y1="84" x2="84" y2="16" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                    <span style="font-size:12px; font-weight:bold; color:#DC2626;">✗ sun barré</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 100 100" style="width:82px; height:82px; margin:auto; display:block;">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#16A34A" stroke-width="3.5"/>
+                        <path d="M58,22 A24,24 0 1,0 58,78 A18,22 0 1,1 58,22 Z" fill="#FACC15" stroke="#64748B" stroke-width="2"/>
+                    </svg>
+                    <span style="font-size:12px; font-weight:bold; color:#16A34A;">✓ moon entourée</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 100 100" style="width:82px; height:82px; margin:auto; display:block;">
+                        <circle cx="50" cy="50" r="20" fill="#FACC15" stroke="#64748B" stroke-width="2"/>
+                        <polygon points="50,10 55,24 45,24" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="50,90 55,76 45,76" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="10,50 24,45 24,55" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <polygon points="90,50 76,45 76,55" fill="#FFF" stroke="#64748B" stroke-width="1.2"/>
+                        <line x1="16" y1="84" x2="84" y2="16" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                    <span style="font-size:12px; font-weight:bold; color:#DC2626;">✗ sun barré</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 100 100" style="width:82px; height:82px; margin:auto; display:block;">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#16A34A" stroke-width="3.5"/>
+                        <path d="M58,22 A24,24 0 1,0 58,78 A18,22 0 1,1 58,22 Z" fill="#FACC15" stroke="#64748B" stroke-width="2"/>
+                    </svg>
+                    <span style="font-size:12px; font-weight:bold; color:#16A34A;">✓ moon entourée</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/anglais" class="btn-retour">← Revenir au menu Anglais</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/anglais/greeting-3")
+def page_anglais_greeting_3():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Friday 27th November 2026</span>
+            <div class="titre-lecon">✏️ English Exercises — Greeting page 3</div>
+        </div>
+
+        <div class="cadre-contenu" style="background:#FFFFFF;">
+            <p style="font-size:16px; font-weight:800; color:#0D47A1; margin-bottom:10px;">1) <u>Entoure ceux qui sont <span style="color:#CA8A04;">yellow</span></u></p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:10px; background:#F8FAFC; border:2px solid #80DEEA; border-radius:14px; padding:12px; text-align:center; margin-bottom:16px;">
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="#16A34A" stroke-width="3"/>
+                        <path d="M40,22 C26,22 22,36 25,52 C28,62 36,64 40,60 C44,64 52,62 55,52 C58,36 54,22 40,22 Z" fill="#FACC15" stroke="#CA8A04" stroke-width="1.8"/>
+                        <path d="M40,22 Q43,14 48,14" fill="none" stroke="#16A34A" stroke-width="2.5"/>
+                    </svg>
+                    <span style="font-size:11px; font-weight:bold; color:#16A34A;">✓ pomme yellow</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <rect x="26" y="18" width="28" height="24" fill="#92400E" stroke="#451A03" stroke-width="1.8"/>
+                        <rect x="24" y="42" width="32" height="6" fill="#B45309"/>
+                        <line x1="27" y1="48" x2="27" y2="66" stroke="#78350F" stroke-width="3"/>
+                        <line x1="53" y1="48" x2="53" y2="66" stroke="#78350F" stroke-width="3"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">chaise (brown)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="#16A34A" stroke-width="3"/>
+                        <path d="M24,54 Q46,54 58,24 Q42,36 24,54 Z" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                    </svg>
+                    <span style="font-size:11px; font-weight:bold; color:#16A34A;">✓ banane yellow</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <rect x="14" y="38" width="52" height="18" rx="6" fill="#94A3B8" stroke="#475569" stroke-width="1.8"/>
+                        <path d="M24,38 L32,24 L50,24 L56,38 Z" fill="#CBD5E1" stroke="#475569" stroke-width="1.8"/>
+                        <circle cx="26" cy="58" r="6" fill="#334155"/><circle cx="54" cy="58" r="6" fill="#334155"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">voiture (grey)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <polygon points="14,32 28,40 14,48" fill="#EF4444"/><polygon points="66,32 52,40 66,48" fill="#EF4444"/>
+                        <circle cx="40" cy="40" r="14" fill="#FFFFFF" stroke="#DC2626" stroke-width="2.5"/>
+                        <rect x="33" y="27" width="14" height="26" fill="#EF4444"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">bonbon (red)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <rect x="22" y="22" width="36" height="40" rx="8" fill="#92400E" stroke="#451A03" stroke-width="2"/>
+                        <rect x="28" y="42" width="24" height="14" rx="4" fill="#B45309"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">cartable (brown)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <line x1="40" y1="64" x2="40" y2="30" stroke="#78350F" stroke-width="5"/>
+                        <path d="M40,30 Q20,20 14,34 M40,30 Q60,20 66,34 M40,30 Q28,12 40,14 M40,30 Q52,12 40,14" fill="none" stroke="#22C55E" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">palmier (green)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <rect x="22" y="22" width="36" height="40" rx="8" fill="#4338CA" stroke="#312E81" stroke-width="2"/>
+                        <rect x="28" y="42" width="24" height="14" rx="4" fill="#6366F1"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">cartable (blue)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="#16A34A" stroke-width="3"/>
+                        <circle cx="40" cy="40" r="16" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                        <polygon points="40,12 44,22 36,22" fill="#FDE047"/><polygon points="40,68 44,58 36,58" fill="#FDE047"/>
+                        <polygon points="12,40 22,36 22,44" fill="#FDE047"/><polygon points="68,40 58,36 58,44" fill="#FDE047"/>
+                    </svg>
+                    <span style="font-size:11px; font-weight:bold; color:#16A34A;">✓ sun yellow</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <path d="M18,48 Q18,24 44,24 Q62,24 62,48 Z" fill="#EF4444" stroke="#B91C1C" stroke-width="2"/>
+                        <path d="M18,48 L6,52 Q16,58 38,50 Z" fill="#DC2626"/>
+                    </svg>
+                    <span style="font-size:11px; color:#64748B;">casquette (red)</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="#16A34A" stroke-width="3"/>
+                        <circle cx="40" cy="40" r="24" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                        <circle cx="40" cy="40" r="16" fill="#FDE047" stroke="#EAB308" stroke-width="1.5"/>
+                        <circle cx="40" cy="20" r="3" fill="#EF4444"/><circle cx="40" cy="60" r="3" fill="#EF4444"/>
+                        <circle cx="20" cy="40" r="3" fill="#EF4444"/><circle cx="60" cy="40" r="3" fill="#EF4444"/>
+                    </svg>
+                    <span style="font-size:11px; font-weight:bold; color:#16A34A;">✓ rond yellow</span>
+                </div>
+                <div>
+                    <svg viewBox="0 0 80 80" style="width:66px; height:66px; margin:auto; display:block;">
+                        <circle cx="40" cy="40" r="35" fill="none" stroke="#16A34A" stroke-width="3"/>
+                        <path d="M48,18 A20,20 0 1,0 48,62 A15,18 0 1,1 48,18 Z" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                    </svg>
+                    <span style="font-size:11px; font-weight:bold; color:#16A34A;">✓ moon yellow</span>
+                </div>
+            </div>
+
+            <p style="font-size:16px; font-weight:800; color:#0D47A1; margin-bottom:10px;">2) <u>Souligne la bonne réponse</u> : dès qu'on arrive en classe, on dit</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div style="background:#FFF1F2; border:2px solid #FDA4AF; border-radius:12px; padding:12px; line-height:2;">
+                    <p style="font-weight:800; color:#DB2777; text-decoration:underline; margin-bottom:4px;">Le matin</p>
+                    <span style="color:#64748B;">Good bye teacher</span><br>
+                    <span style="color:#64748B;">Good afternoon teacher</span><br>
+                    <span style="color:#64748B;">Good morning teacher</span><br>
+                    <span style="color:#64748B;">Good bye everybody</span><br>
+                    <b style="color:#16A34A; text-decoration:underline;">Good morning everybody</b> ✓
+                </div>
+                <div style="background:#FFF1F2; border:2px solid #FDA4AF; border-radius:12px; padding:12px; line-height:2;">
+                    <p style="font-weight:800; color:#DB2777; text-decoration:underline; margin-bottom:4px;">L'après midi</p>
+                    <span style="color:#64748B;">Good bye teacher</span><br>
+                    <b style="color:#16A34A; text-decoration:underline;">Good afternoon teacher</b> ✓<br>
+                    <span style="color:#64748B;">Good morning teacher</span><br>
+                    <span style="color:#64748B;">Good bye everybody</span><br>
+                    <span style="color:#64748B;">Good morning everybody</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/anglais" class="btn-retour">← Revenir au menu Anglais</a>
         </div>
     """
     return afficher(html)
@@ -2538,6 +2910,34 @@ def page_lecon_ortho_son_or():
             </div>
         </div>
 
+        <div class="cahier-seyes" style="margin-top:14px;">
+            <div style="border:2px solid #4361EE; border-radius:10px; padding:8px 14px; background:#F0F4FF; text-align:center; margin-bottom:14px;">
+                <b style="color:#D90429; font-size:18px;">Suite, Le son « or »</b> <span style="color:#1E3A8A; font-weight:bold; font-size:14px;">(Lundi 1)</span><br>
+                <span style="color:#DC2626; font-weight:bold; font-size:15px;">or — ore — orps</span>
+            </div>
+
+            <div style="margin-bottom:12px; line-height:2.1;">
+                ✦ <b style="color:#D90429; font-size:16px;">or :</b>
+                <span style="color:#1E3A8A; font-weight:bold;">
+                    Méd<b style="color:#D90429;">or</b> &nbsp;—&nbsp; le déc<b style="color:#D90429;">or</b> &nbsp;—&nbsp; la déc<b style="color:#D90429;">or</b>ation
+                </span>
+            </div>
+
+            <div style="margin-bottom:12px; line-height:2.1;">
+                ✦ <b style="color:#D90429; font-size:16px;">ore :</b>
+                <span style="color:#1E3A8A; font-weight:bold;">
+                    le sc<b style="color:#D90429;">ore</b> &nbsp;—&nbsp; le sémaph<b style="color:#D90429;">ore</b>.
+                </span>
+            </div>
+
+            <div style="line-height:2.1;">
+                ✦ <b style="color:#D90429; font-size:16px;">orps :</b>
+                <span style="color:#1E3A8A; font-weight:bold;">
+                    le c<b style="color:#D90429;">orps</b>.
+                </span>
+            </div>
+        </div>
+
         <div style="text-align:center;">
             <a href="/francais/lecons/orthographe" class="btn-retour">← Revenir aux Leçons d'Orthographe</a>
         </div>
@@ -2726,6 +3126,7 @@ def page_lecons_grammaire():
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/grammaire/26-lettres" data-titre="Les 26 lettres de l'alphabet francais">Les 26 lettres de l'alphabet francais</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/grammaire/syllabes" data-titre="Les syllabes">Les syllabes</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/grammaire/noms" data-titre="les noms">les noms</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/lecons/grammaire/jardin" data-titre="Le jardin">Le jardin</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/lecons" class="btn-retour">← Revenir aux leçons de Français</a>
@@ -2837,6 +3238,49 @@ def page_lecon_gramm_noms():
                 </ul>
             </div>
         </div>
+        <div style="margin-top:16px; background:#ECFDF5; border:3px solid #10B981; border-radius:14px; padding:14px;">
+            <div style="text-align:center; margin-bottom:10px;">
+                <span style="background:#059669; color:#ffffff; font-size:13px; font-weight:bold; padding:4px 12px; border-radius:10px;">
+                    📖 Suite : les noms
+                </span>
+            </div>
+            <p style="font-size:15px; font-weight:bold; color:#065F46; margin-bottom:6px;">✨ Les noms communs :</p>
+            <div style="background:#ffffff; border-radius:10px; padding:12px; font-size:14px; line-height:2.1; color:#1F2937;">
+                ✦ <b>Un nom commun</b> c'est un nom qui commence par <b>une lettre minuscule</b> qui s'applique à tout le monde.<br>
+                ✦ <b style="color:#0D47A1;">Exemple :</b> <span style="color:#1E3A8A; font-weight:bold;">papa - cartable - le coq.</span>
+            </div>
+        </div>
+        <div style="text-align:center;">
+            <a href="/francais/lecons/grammaire" class="btn-retour">← Revenir aux Leçons de Grammaire</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/lecons/grammaire/jardin")
+def page_lecon_gramm_jardin():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mardi 24 Novembre 2026</span>
+            <div class="titre-lecon">📖 Grammaire : Le jardin</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div style="border:2px solid #16A34A; border-radius:10px; padding:8px 14px; background:#F0FDF4; text-align:center; margin-bottom:14px;">
+                <b style="color:#D90429; font-size:18px;">Le jardin</b>
+            </div>
+            <div style="font-size:15px; line-height:2.2; color:#1E3A8A; font-weight:bold;">
+                <p style="margin-bottom:10px;">
+                    Dans le jardin potager, il y a <b style="color:#D90429;">des légumes</b>, comme par exemple : la salade, la tomate, les brèdes.
+                </p>
+                <p style="margin-bottom:10px;">
+                    La personne qui s'occupe du jardin s'appelle <b style="color:#D90429;">le jardinier</b>.
+                </p>
+                <p>
+                    Les outils sont : la bêche, le râteau, l'arrosoir, le sécateur, la brouette.
+                </p>
+            </div>
+        </div>
+
         <div style="text-align:center;">
             <a href="/francais/lecons/grammaire" class="btn-retour">← Revenir aux Leçons de Grammaire</a>
         </div>
@@ -3000,6 +3444,7 @@ def page_exercices_dictee():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/30-octobre" data-titre="1-Ils montrent la carte de l'étudiant.">1-Ils montrent la carte de l'étudiant.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/13-novembre" data-titre="Elle prépare un bon achard">Elle prépare un bon achard</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/19-novembre" data-titre="1-Nous avons tort">1-Nous avons tort</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/dictee/27-novembre" data-titre="Tu as des légumes">Tu as des légumes</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3170,6 +3615,26 @@ def page_ex_dictee_19_nov():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/dictee/27-novembre")
+def page_ex_dictee_27_nov():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Vendredi 27 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Dictée préparée — Tu as des légumes</div>
+        </div>
+        <div class="cadre-contenu" style="font-size:16px; line-height:2.4;">
+            ✦ <b style="color:#0D47A1;">Tu as des légumes.</b><br>
+            ✦ <b style="color:#0D47A1;">Elle a une bonne santé.</b><br>
+            ✦ <b style="color:#0D47A1;">Le jeune Frédéric a trouvé du tabac sur la table.</b><br>
+            ✦ <b style="color:#0D47A1;">Maman a préparé la crème.</b><br>
+            ✦ <b style="color:#0D47A1;">Le jardinier s'occupe du jardin.</b>
+        </div>
+        <div style="text-align:center;">
+            <a href="/francais/exercices/dictee" class="btn-retour">← Revenir aux Dictées préparées</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/orthographe")
 def page_exercices_orthographe():
     html = """
@@ -3187,6 +3652,7 @@ def page_exercices_orthographe():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/dictee" data-titre="1-Dictée.">1-Dictée.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/ard-art" data-titre="1-ard,art">1-ard,art</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/ors-ort" data-titre="1-ors,ort">1-ors,ort</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/orthographe/cherche-orps" data-titre="1-Cherche orps">1-Cherche orps</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3428,6 +3894,35 @@ def page_ex_ortho_ors_ort():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/orthographe/cherche-orps")
+def page_ex_ortho_cherche_orps():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mercredi 25 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Orthographe — 1-Cherche orps</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">1) Cherche un mot qui contient « orps » :</p>
+        <div style="background:#E1F5FE; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#15803D; margin-bottom:12px;">
+            ✦ le corps.
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">2) Complète par : or, ore.</p>
+        <div style="background:#fff; border:2px solid #80DEEA; border-radius:10px; padding:10px; font-size:15px; line-height:2; margin-bottom:12px;">
+            ✦ le sc<b style="color:#D81B60;">ore</b> &nbsp;—&nbsp; Méd<b style="color:#D81B60;">or</b> &nbsp;—&nbsp; la déc<b style="color:#D81B60;">or</b>ation &nbsp;—&nbsp; le sémaph<b style="color:#D81B60;">ore</b>.
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:6px;">3) Dictée des mots :</p>
+        <div style="background:#fff; border:2px solid #80DEEA; border-radius:10px; padding:10px; font-size:15px; font-weight:bold; color:#1E3A8A;">
+            le corps &nbsp;—&nbsp; sémaphore &nbsp;—&nbsp; dehors &nbsp;—&nbsp; le score
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/orthographe" class="btn-retour">← Revenir aux exercices d'Orthographe</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/conjugaison")
 def page_exercices_conjugaison():
     html = """
@@ -3445,6 +3940,7 @@ def page_exercices_conjugaison():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/remplace-soulignes" data-titre="1-Remplace les mots soulignés.">1-Remplace les mots soulignés.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/pp-sujets" data-titre="1-PP Sujets">1-PP Sujets</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/verbe-avoir" data-titre="1-Verbe avoir">1-Verbe avoir</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/conjugaison/relie" data-titre="1-Relie">1-Relie</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3658,6 +4154,62 @@ def page_ex_conj_verbe_avoir():
     """
     return afficher(html)
 
+@app.route("/francais/exercices/conjugaison/relie")
+def page_ex_conj_relie():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 23 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Conjugaison — 1-Relie</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte">1) Relie par des flèches :</div>
+            <div style="background:#FFFFFF; border:2px solid #80DEEA; border-radius:12px; padding:12px; margin-bottom:16px; text-align:center; overflow-x:auto;">
+                <svg viewBox="0 0 300 135" style="width:100%; max-width:300px; margin:auto; display:block;">
+                    <defs>
+                        <marker id="arrow-conj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#0284C7"/>
+                        </marker>
+                    </defs>
+                    <text x="20" y="28" font-size="15" font-weight="bold" fill="#1E3A8A">J'</text>
+                    <circle cx="95" cy="23" r="4" fill="#D90429"/>
+                    <text x="20" y="70" font-size="15" font-weight="bold" fill="#1E3A8A">Elle</text>
+                    <circle cx="95" cy="65" r="4" fill="#D90429"/>
+                    <text x="20" y="112" font-size="15" font-weight="bold" fill="#1E3A8A">Tu</text>
+                    <circle cx="95" cy="107" r="4" fill="#D90429"/>
+
+                    <circle cx="205" cy="23" r="4" fill="#16A34A"/>
+                    <text x="220" y="28" font-size="15" font-weight="bold" fill="#15803D">a</text>
+                    <circle cx="205" cy="65" r="4" fill="#16A34A"/>
+                    <text x="220" y="70" font-size="15" font-weight="bold" fill="#15803D">ai</text>
+                    <circle cx="205" cy="107" r="4" fill="#16A34A"/>
+                    <text x="220" y="112" font-size="15" font-weight="bold" fill="#15803D">as</text>
+
+                    <line x1="99" y1="25" x2="199" y2="63" stroke="#0284C7" stroke-width="2.5" marker-end="url(#arrow-conj)"/>
+                    <line x1="99" y1="63" x2="199" y2="25" stroke="#0284C7" stroke-width="2.5" marker-end="url(#arrow-conj)"/>
+                    <line x1="99" y1="107" x2="199" y2="107" stroke="#0284C7" stroke-width="2.5" marker-end="url(#arrow-conj)"/>
+                </svg>
+            </div>
+
+            <div class="cahier-ligne-texte">2) Conjugue le verbe dans ces phrases :</div>
+            <div style="font-size:15px; line-height:2.1; color:#1E3A8A; font-weight:bold;">
+                • Jean (avoir) mal aux yeux.<br>
+                &nbsp;&nbsp;➔ Jean <b style="color:#16A34A; text-decoration:underline;">a</b> mal aux yeux.<br><br>
+                • Ils (avoir) des cartables.<br>
+                &nbsp;&nbsp;➔ Ils <b style="color:#16A34A; text-decoration:underline;">ont</b> des cartables.<br><br>
+                • Nous (avoir) une jolie devoir.<br>
+                &nbsp;&nbsp;➔ Nous <b style="color:#16A34A; text-decoration:underline;">avons</b> une jolie devoir.<br><br>
+                • Toi et mon frère (avoir) le même record.<br>
+                &nbsp;&nbsp;➔ Toi et mon frère <b style="color:#16A34A; text-decoration:underline;">avez</b> le même record.
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/conjugaison" class="btn-retour">← Revenir aux exercices de Conjugaison</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/francais/exercices/grammaire")
 def page_exercices_grammaire():
     html = """
@@ -3675,6 +4227,7 @@ def page_exercices_grammaire():
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/souligne-bonne-rep" data-titre="1-Souligne la bonne réponse.">1-Souligne la bonne réponse.</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/minuscule-majuscule" data-titre="1-Miniscule ou majuscule">1-Miniscule ou majuscule</button>
             <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/le-et-la" data-titre="1-le et la">1-le et la</button>
+            <button type="button" class="btn-rose btn-option" data-url="/francais/exercices/grammaire/le-les" data-titre="1-Complète par le,les">1-Complète par le,les</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/francais/exercices" class="btn-retour">← Revenir aux exercices de Français</a>
@@ -3897,6 +4450,33 @@ def page_ex_gramm_le_et_la():
             ✦ <b style="color:#15803D;">l'</b> article &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> étoiles &nbsp;—&nbsp; <b style="color:#15803D;">l'</b> armoire<br>
             ✦ <b style="color:#7C3AED;">les</b> écoliers &nbsp;—&nbsp; <b style="color:#15803D;">l'</b> école &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> élèves<br>
             ✦ <b style="color:#15803D;">l'</b> achard &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> enfants
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/francais/exercices/grammaire" class="btn-retour">← Revenir aux exercices de Grammaire</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/francais/exercices/grammaire/le-les")
+def page_ex_gramm_le_les():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 23 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Grammaire — 1-Complète par le,les</div>
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-bottom:8px;">1) Complète par le, les :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ <b style="color:#0D47A1;">le</b> boeuf &nbsp;—&nbsp; <b style="color:#0D47A1;">le</b> bonbon &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> enfants &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> écoliers<br>
+            ✦ <b style="color:#0D47A1;">le</b> cahier &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> légumes &nbsp;—&nbsp; <b style="color:#0D47A1;">le</b> crayon &nbsp;—&nbsp; <b style="color:#7C3AED;">les</b> étudiants.
+        </div>
+
+        <p style="font-weight:bold; color:#0D47A1; margin-top:12px; margin-bottom:8px;">2) Complète par la, l' :</p>
+        <div class="cadre-contenu" style="font-size:15px; line-height:2.2;">
+            ✦ <b style="color:#15803D;">l'</b> animal &nbsp;—&nbsp; <b style="color:#D81B60;">la</b> directrice &nbsp;—&nbsp; <b style="color:#D81B60;">la</b> maîtresse<br>
+            ✦ <b style="color:#15803D;">l'</b> épine &nbsp;—&nbsp; <b style="color:#D81B60;">la</b> radio &nbsp;—&nbsp; <b style="color:#D81B60;">la</b> fois<br>
+            ✦ <b style="color:#15803D;">l'</b> ombre &nbsp;—&nbsp; <b style="color:#15803D;">l'</b> étagère.
         </div>
 
         <div style="text-align:center;">
@@ -4687,6 +5267,7 @@ def page_exercices_arithmetique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/ecris" data-titre="1-Ecris">1-Ecris</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/on-pose-effectue" data-titre="1-On pose et effectue">1-On pose et effectue</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/lettres" data-titre="1-Lettres">1-Lettres</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/arithmetique/arithmetiques" data-titre="1-Arithmétiques">1-Arithmétiques</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -4997,6 +5578,66 @@ def page_ex_arith_lettres():
     """
     return afficher(html)
 
+@app.route("/mathematiques/exercices/arithmetique/arithmetiques")
+def page_ex_arith_arithmetiques():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Lundi 23 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Arithmétique — 1-Arithmétiques</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte" style="color:#0D47A1;">1) Écris en lettres :</div>
+            <div style="background:#FFFFFF; border:2px dashed #4CAF50; border-radius:10px; padding:10px 14px; font-size:15px; font-weight:bold; color:#1B5E20; line-height:2.1; margin-bottom:16px;">
+                ✦ <b>13</b> = treize<br>
+                ✦ <b>11</b> = onze<br>
+                ✦ <b>15</b> = quinze<br>
+                ✦ <b>10</b> = dix
+            </div>
+
+            <div class="cahier-ligne-texte" style="color:#0D47A1;">2) Pose et effectue :</div>
+            <table class="table-calc">
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">42 - 19 = 23</span><br><br>
+                        &nbsp;&nbsp;4 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>2<br>
+                        - 1<sub><span style="color:#DC2626;">1</span></sub> 9<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">2 3</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">65 - 27 = 38</span><br><br>
+                        &nbsp;&nbsp;6 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>5<br>
+                        - 2<sub><span style="color:#DC2626;">1</span></sub> 7<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">3 8</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="color:#0D47A1;">71 - 55 = 16</span><br><br>
+                        &nbsp;&nbsp;7 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>1<br>
+                        - 5<sub><span style="color:#DC2626;">1</span></sub> 5<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">1 6</span>
+                    </td>
+                    <td>
+                        <span style="color:#0D47A1;">83 - 44 = 39</span><br><br>
+                        &nbsp;&nbsp;8 <span style="color:#DC2626; font-size:12px; vertical-align:super;">1</span>3<br>
+                        - 4<sub><span style="color:#DC2626;">1</span></sub> 4<br>
+                        -------<br>
+                        &nbsp;&nbsp;<span style="color:#16A34A;">3 9</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/arithmetique" class="btn-retour">← Revenir aux exercices d'Arithmétique</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/mathematiques/exercices/geometrie")
 def page_exercices_geometrie():
     html = """
@@ -5008,6 +5649,7 @@ def page_exercices_geometrie():
 
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/geometrie/ligne-6cm" data-titre="1-Trace une ligne droite horizontale de 6cm.">1-Trace une ligne droite horizontale de 6cm.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/geometrie/souligne" data-titre="1-Souligne la bonne réponse.">1-Souligne la bonne réponse.</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/geometrie/tracage" data-titre="1-Tracage">1-Tracage</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -5095,6 +5737,46 @@ def page_ex_geo_souligne():
     """
     return afficher(html)
 
+@app.route("/mathematiques/exercices/geometrie/tracage")
+def page_ex_geo_tracage():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mardi 24 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Géométrie — 1-Tracage</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte">1) Trace un [PC] = 6 cm en ligne horizontale :</div>
+            <svg width="260" height="58" style="display:block; margin-bottom:14px;">
+                <circle cx="20" cy="34" r="4" fill="#1E3A8A"/>
+                <circle cx="188" cy="34" r="4" fill="#1E3A8A"/>
+                <line x1="20" y1="34" x2="188" y2="34" stroke="#1E3A8A" stroke-width="3"/>
+                <text x="16" y="20" font-size="13" font-weight="bold" fill="#1E3A8A">P</text>
+                <text x="92" y="22" font-size="13" font-weight="bold" fill="#047857">6 cm</text>
+                <text x="184" y="20" font-size="13" font-weight="bold" fill="#1E3A8A">C</text>
+            </svg>
+
+            <div class="cahier-ligne-texte">2) Trace une ligne brisée :</div>
+            <svg width="250" height="75" style="display:block; margin-bottom:14px;">
+                <polyline points="15,58 45,18 75,58 105,18 135,58 165,18 195,58" fill="none" stroke="#1E3A8A" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+
+            <div class="cahier-ligne-texte">3) Trace une demi-droite AP = 4 cm en ligne oblique :</div>
+            <svg width="220" height="125" style="display:block;">
+                <circle cx="30" cy="24" r="4" fill="#1E3A8A"/>
+                <line x1="30" y1="24" x2="145" y2="105" stroke="#1E3A8A" stroke-width="3"/>
+                <text x="26" y="15" font-size="13" font-weight="bold" fill="#1E3A8A">A</text>
+                <text x="94" y="55" font-size="13" font-weight="bold" fill="#047857">4 cm</text>
+                <text x="152" y="108" font-size="13" font-weight="bold" fill="#1E3A8A">P</text>
+            </svg>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/geometrie" class="btn-retour">← Revenir aux exercices de Géométrie</a>
+        </div>
+    """
+    return afficher(html)
+
 @app.route("/mathematiques/exercices/metrique")
 def page_exercices_metrique():
     html = """
@@ -5112,6 +5794,7 @@ def page_exercices_metrique():
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/segment-ab-6cm" data-titre="1-Trace un segment [AB] de 6 cm.">1-Trace un segment [AB] de 6 cm.</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/complete" data-titre="1-Complete">1-Complete</button>
             <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/relie-metres" data-titre="1-Relie les mètres">1-Relie les mètres</button>
+            <button type="button" class="btn-rose btn-option" data-url="/mathematiques/exercices/metrique/5-metres" data-titre="1-Il y a 5 metres">1-Il y a 5 metres</button>
 
             <button type="button" id="btn-valider" class="btn-choose">➜ Choose</button>
             <a href="/mathematiques/exercices" class="btn-retour">← Revenir</a>
@@ -5464,6 +6147,37 @@ def page_ex_met_relie_metres():
 
             <div style="background:#FEFCE8; border-left:4px solid #CA8A04; padding:10px 12px; border-radius:6px; font-size:15px; line-height:1.8;">
                 <b>Quand on mesure la longueur d'une chose, on se sert d'un mètre.</b>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="/mathematiques/exercices/metrique" class="btn-retour">← Revenir aux exercices de Système Métrique</a>
+        </div>
+    """
+    return afficher(html)
+
+@app.route("/mathematiques/exercices/metrique/5-metres")
+def page_ex_met_5_metres():
+    html = """
+        <div style="text-align:center;">
+            <span class="badge-date">📅 Mardi 24 Novembre 2026</span>
+            <div class="titre-lecon">✏️ Système métrique — 1-Il y a 5 metres</div>
+        </div>
+
+        <div class="cahier-seyes">
+            <div class="cahier-ligne-texte">1) Il y a combien de mètre ?</div>
+            <div style="font-size:15px; font-weight:bold; color:#16A34A; margin-bottom:14px;">
+                ✦ Il y a 5 mètres.
+            </div>
+
+            <div class="cahier-ligne-texte">2) Quel est l'unité principale de mesure de longueur ?</div>
+            <div style="font-size:15px; font-weight:bold; color:#16A34A; margin-bottom:14px;">
+                ✦ L'unité principale de mesure de longueur est le mètre.
+            </div>
+
+            <div class="cahier-ligne-texte">3) Donne 3 exemples de mètre :</div>
+            <div style="font-size:15px; font-weight:bold; color:#16A34A;">
+                ✦ Roulant - rigide - pliant.
             </div>
         </div>
 
