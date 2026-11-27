@@ -1,6 +1,6 @@
 {
-  "name": "Programme en 11ème",
-  "short_name": "11ème",
+  "name": "Gestion",
+  "short_name": "Gerer",
   "description": "Application éducative complète pour le programme scolaire de 11ème.",
   "start_url": "/",
   "display": "standalone",
