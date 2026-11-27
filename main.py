@@ -27,7 +27,7 @@ def trouver_fichier_pdf(nom_pdf):
     """Recherche un fichier PDF à côté du script ou dans pdfs/ et pdf/ (insensible à la casse)."""
     base = dossier_application()
     variantes = [nom_pdf, nom_pdf.replace(" ", "_"), nom_pdf.replace("_", " ")]
-    dossiers = [base]
+    dossiers = [base, base / "pdfs", base / "pdf"]
     for d in dossiers:
         if not d.is_dir():
             continue
@@ -99,10 +99,8 @@ def rendre_bloc_pdf(nom_pdf, titre_bloc, couleur, candidats):
         return f'{cards}<div style="text-align:center; margin-bottom:14px;"><a href="{url_pdf}" target="_blank" rel="noopener" class="pdf-btn" style="border-color:{couleur}; color:{couleur};">📄 Ouvrir / Télécharger {nom_pdf}</a></div>'
     import json, html as _html
     cand_urls = []
-   for c in candidats:
-        for p in (f"/pdf/{c}", f"./{c}"):
-       
-   
+    for c in candidats:
+        for p in (f"./{c}", f"/pdf/{c}"):
             if p not in cand_urls:
                 cand_urls.append(p)
     cand_json = _html.escape(json.dumps(cand_urls), quote=True)
